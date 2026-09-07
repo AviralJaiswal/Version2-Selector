@@ -1,0 +1,203 @@
+{"timestamp": "2026-08-18T10:13:55.533349Z", "event_type": "query_event", "session_id": "e46f89e4-d17e-44de-9e21-332ad26fbd8b", "query": "i need new connectioj", "intent": "general_question", "mode": "deterministic"}
+{"timestamp": "2026-08-18T10:14:01.294335Z", "event_type": "query_event", "session_id": "e46f89e4-d17e-44de-9e21-332ad26fbd8b", "query": "600012", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-18T10:14:24.042231Z", "event_type": "query_event", "session_id": "2c4511ce-0916-4931-9344-26716a0611d6", "query": "i  need n ew connection", "intent": "general_question", "mode": "deterministic"}
+{"timestamp": "2026-08-18T10:14:28.139530Z", "event_type": "query_event", "session_id": "2c4511ce-0916-4931-9344-26716a0611d6", "query": "600013", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-18T10:14:52.893469Z", "event_type": "query_event", "session_id": "2c4511ce-0916-4931-9344-26716a0611d6", "query": "Address: 4/18, guindy", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-18T10:35:28.440591Z", "event_type": "query_event", "session_id": "SES-123456", "query": "Which plan is best for gaming and work from home", "intent": "customer_info", "mode": "deterministic"}
+{"timestamp": "2026-08-19T05:58:35.849238Z", "event_type": "query_event", "session_id": "da956c36-5f28-4430-805f-714a7229f92e", "query": "hello", "intent": "session_start", "mode": "gemini"}
+{"timestamp": "2026-08-19T05:58:55.537008Z", "event_type": "query_event", "session_id": "5298fe92-e33a-4792-a99d-337b6ca094fa", "query": "hi , i need help", "intent": "general_question", "mode": "gemini"}
+{"timestamp": "2026-08-19T06:09:59.840933Z", "event_type": "query_event", "session_id": "920a01de-de16-4919-bd66-d8fcdeef7edc", "query": "hello, who are you", "intent": "general_question", "mode": "gemini"}
+{"timestamp": "2026-08-19T06:10:32.998424Z", "event_type": "query_event", "session_id": "920a01de-de16-4919-bd66-d8fcdeef7edc", "query": "what else can you do", "intent": "general_question", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:33:35.484681Z", "event_type": "session_welcome", "session_id": "d93a4709-65e9-489d-89c1-3f21a95138af", "channel": "api"}
+{"timestamp": "2026-08-20T05:38:07.175912Z", "event_type": "query_event", "session_id": "d93a4709-65e9-489d-89c1-3f21a95138af", "query": "Hi there", "intent": "session_start", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:38:30.300517Z", "event_type": "query_event", "session_id": "d93a4709-65e9-489d-89c1-3f21a95138af", "query": "I have few questions regarding plans", "intent": "explain_or_compare", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:42:26.600628Z", "event_type": "query_event", "session_id": "test-concise-rag", "query": "what documents are required for KYC?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:42:41.380963Z", "event_type": "query_event", "session_id": "test-concise-rag", "query": "what documents are required for KYC?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:44:37.681842Z", "event_type": "session_welcome", "session_id": "e6517c3d-899d-4340-87c3-7f1810f2feb2", "channel": "api"}
+{"timestamp": "2026-08-20T05:44:49.007022Z", "event_type": "query_event", "session_id": "e6517c3d-899d-4340-87c3-7f1810f2feb2", "query": "Is there an installation fee or security deposit?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:46:45.948853Z", "event_type": "query_event", "session_id": "e6517c3d-899d-4340-87c3-7f1810f2feb2", "query": "And how long does the installation take ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:49:27.448496Z", "event_type": "query_event", "session_id": "test-ui-clean", "query": "Is there an installation fee or security deposit?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:49:58.726819Z", "event_type": "query_event", "session_id": "test-ui-clean2", "query": "Is there an installation fee or security deposit?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:50:18.327680Z", "event_type": "query_event", "session_id": "test-ui-clean3", "query": "Is there an installation fee or security deposit?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:50:32.458387Z", "event_type": "session_welcome", "session_id": "3db4639a-9a73-4163-a8cd-e7e36f8ddd07", "channel": "api"}
+{"timestamp": "2026-08-20T05:50:43.813793Z", "event_type": "query_event", "session_id": "3db4639a-9a73-4163-a8cd-e7e36f8ddd07", "query": "How long does installation take ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:51:01.753556Z", "event_type": "query_event", "session_id": "test-ui-clean4", "query": "Is there an installation fee or security deposit?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:51:38.716455Z", "event_type": "query_event", "session_id": "test-ui-clean5", "query": "Is there an installation fee or security deposit?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:52:27.145969Z", "event_type": "session_welcome", "session_id": "f9856078-1085-45a6-80be-aaaaa395c754", "channel": "api"}
+{"timestamp": "2026-08-20T05:52:50.906348Z", "event_type": "query_event", "session_id": "f9856078-1085-45a6-80be-aaaaa395c754", "query": "Is there an installation fee or security deposit?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:55:41.174307Z", "event_type": "query_event", "session_id": "test-oos", "query": "How to cook biryani?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:56:41.713758Z", "event_type": "query_event", "session_id": "test-oos2", "query": "How to cook biryani?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:57:54.146538Z", "event_type": "query_event", "session_id": "f9856078-1085-45a6-80be-aaaaa395c754", "query": "any furniture plans also ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:58:15.803866Z", "event_type": "session_welcome", "session_id": "d67ac4d1-4c7a-4a73-8565-e818c8d70aa5", "channel": "api"}
+{"timestamp": "2026-08-20T05:58:25.861074Z", "event_type": "query_event", "session_id": "d67ac4d1-4c7a-4a73-8565-e818c8d70aa5", "query": "any furniture or gym plans ?", "intent": "out_of_scope", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:58:34.927714Z", "event_type": "query_event", "session_id": "d67ac4d1-4c7a-4a73-8565-e818c8d70aa5", "query": "any furniture plans ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:59:01.604847Z", "event_type": "session_welcome", "session_id": "b3338f6b-6660-4c6d-b7f1-55056ccc72b5", "channel": "api"}
+{"timestamp": "2026-08-20T05:59:20.452531Z", "event_type": "query_event", "session_id": "b3338f6b-6660-4c6d-b7f1-55056ccc72b5", "query": "which plan should I choose for wfh and gaming/streaminf", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T05:59:53.965234Z", "event_type": "query_event", "session_id": "b3338f6b-6660-4c6d-b7f1-55056ccc72b5", "query": "any furniture plans ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:01:49.303954Z", "event_type": "query_event", "session_id": "b3338f6b-6660-4c6d-b7f1-55056ccc72b5", "query": "cricket plans ?", "intent": "out_of_scope", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:01:52.889330Z", "event_type": "query_event", "session_id": "test-furniture", "query": "any furniture plans?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:02:31.625038Z", "event_type": "query_event", "session_id": "test-wfh-gaming", "query": "which plan should I choose for wfh and gaming/streaminf", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:02:41.011462Z", "event_type": "session_welcome", "session_id": "9e53df2c-0e33-40d5-86ee-82a3ec2e1e12", "channel": "api"}
+{"timestamp": "2026-08-20T06:02:49.138125Z", "event_type": "query_event", "session_id": "9e53df2c-0e33-40d5-86ee-82a3ec2e1e12", "query": "which plan is best for gaming", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:04:12.560296Z", "event_type": "session_welcome", "session_id": "c7ec5e1c-e579-4b86-ae2f-80d075d895fc", "channel": "api"}
+{"timestamp": "2026-08-20T06:04:18.807091Z", "event_type": "query_event", "session_id": "c7ec5e1c-e579-4b86-ae2f-80d075d895fc", "query": "Gym plan ?", "intent": "out_of_scope", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:04:25.354409Z", "event_type": "query_event", "session_id": "c7ec5e1c-e579-4b86-ae2f-80d075d895fc", "query": "furniture plan ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:05:08.913667Z", "event_type": "query_event", "session_id": "c7ec5e1c-e579-4b86-ae2f-80d075d895fc", "query": "diet plan ?", "intent": "out_of_scope", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:06:24.796882Z", "event_type": "query_event", "session_id": "test-g1", "query": "gym plan?", "intent": "out_of_scope", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:06:26.024733Z", "event_type": "query_event", "session_id": "test-g2", "query": "diet plan?", "intent": "out_of_scope", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:08:26.554325Z", "event_type": "query_event", "session_id": "c7ec5e1c-e579-4b86-ae2f-80d075d895fc", "query": "which is the best plan for 8k  streaming", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:08:49.077694Z", "event_type": "query_event", "session_id": "c7ec5e1c-e579-4b86-ae2f-80d075d895fc", "query": "which plan for video calls ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:11:14.553830Z", "event_type": "query_event", "session_id": "test-videocall", "query": "which plan for video calls ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:12:18.477279Z", "event_type": "session_welcome", "session_id": "671b8cdd-3a4f-41d8-a0ab-dac07b9e89c3", "channel": "api"}
+{"timestamp": "2026-08-20T06:12:32.287625Z", "event_type": "query_event", "session_id": "671b8cdd-3a4f-41d8-a0ab-dac07b9e89c3", "query": "any suggestion on which plan to take for video calls ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:12:43.377907Z", "event_type": "query_event", "session_id": "671b8cdd-3a4f-41d8-a0ab-dac07b9e89c3", "query": "for gaming ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:13:14.167224Z", "event_type": "query_event", "session_id": "671b8cdd-3a4f-41d8-a0ab-dac07b9e89c3", "query": "refund policy ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:13:28.842231Z", "event_type": "query_event", "session_id": "671b8cdd-3a4f-41d8-a0ab-dac07b9e89c3", "query": "installation time ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:13:50.854422Z", "event_type": "query_event", "session_id": "671b8cdd-3a4f-41d8-a0ab-dac07b9e89c3", "query": "any installation charges ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:14:05.303832Z", "event_type": "query_event", "session_id": "671b8cdd-3a4f-41d8-a0ab-dac07b9e89c3", "query": "okay 600001", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:24:12.213510Z", "event_type": "pincode_check", "session_id": "SES-D97E49473631", "pincode": "600013", "street_address": null, "serviceable": true, "circle": "Chennai"}
+{"timestamp": "2026-08-20T06:24:30.960922Z", "event_type": "pincode_check", "session_id": "SES-27684F80B5E4", "pincode": "600013", "street_address": null, "serviceable": true, "circle": "Chennai"}
+{"timestamp": "2026-08-20T06:26:40.350674Z", "event_type": "session_welcome", "session_id": "66fb9f08-2875-4f4e-ac09-4317608d5f5e", "channel": "api"}
+{"timestamp": "2026-08-20T06:27:05.581125Z", "event_type": "session_welcome", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "channel": "api"}
+{"timestamp": "2026-08-20T06:27:32.891116Z", "event_type": "query_event", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "query": "Hello I would like to know about installation time", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:27:46.450933Z", "event_type": "query_event", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "query": "refund policy?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:28:09.865544Z", "event_type": "query_event", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "query": "plan for video calls ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:28:22.467017Z", "event_type": "query_event", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "query": "and for work from home ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:28:47.584886Z", "event_type": "query_event", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "query": "plans for gaming ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:29:04.540753Z", "event_type": "query_event", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "query": "Okay 2010111", "intent": "invalid_pincode", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:29:14.833212Z", "event_type": "query_event", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "query": "sorry 999999", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:29:29.931224Z", "event_type": "query_event", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "query": "no 201011", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:29:43.331253Z", "event_type": "query_event", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "query": "2010122", "intent": "invalid_pincode", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:29:53.335286Z", "event_type": "query_event", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "query": "777777", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:31:17.307316Z", "event_type": "query_event", "session_id": "c63afc52-0ffe-4d1f-a1d2-103808ae7f9c", "query": "888888", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:37:20.921369Z", "event_type": "session_welcome", "session_id": "f410af0d-cbb4-43cd-b77d-e9284ae4132a", "channel": "api"}
+{"timestamp": "2026-08-20T06:37:27.376447Z", "event_type": "query_event", "session_id": "f410af0d-cbb4-43cd-b77d-e9284ae4132a", "query": "okay 888888", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:37:36.674801Z", "event_type": "query_event", "session_id": "f410af0d-cbb4-43cd-b77d-e9284ae4132a", "query": "098765", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:37:44.363500Z", "event_type": "session_welcome", "session_id": "0a671b46-a642-4c78-974f-1fa7121ad314", "channel": "api"}
+{"timestamp": "2026-08-20T06:37:48.931049Z", "event_type": "query_event", "session_id": "0a671b46-a642-4c78-974f-1fa7121ad314", "query": "777777", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:37:52.372790Z", "event_type": "query_event", "session_id": "0a671b46-a642-4c78-974f-1fa7121ad314", "query": "888888", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:37:56.651339Z", "event_type": "query_event", "session_id": "0a671b46-a642-4c78-974f-1fa7121ad314", "query": "999999", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:38:06.990749Z", "event_type": "query_event", "session_id": "0a671b46-a642-4c78-974f-1fa7121ad314", "query": "0987654", "intent": "invalid_pincode", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:38:11.914175Z", "event_type": "query_event", "session_id": "0a671b46-a642-4c78-974f-1fa7121ad314", "query": "098765", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:38:21.594558Z", "event_type": "session_welcome", "session_id": "8919b3f2-be9b-4748-8f64-a7ccebb412d5", "channel": "api"}
+{"timestamp": "2026-08-20T06:38:29.064451Z", "event_type": "query_event", "session_id": "8919b3f2-be9b-4748-8f64-a7ccebb412d5", "query": "012345", "intent": "new_action_address", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:38:38.054055Z", "event_type": "query_event", "session_id": "8919b3f2-be9b-4748-8f64-a7ccebb412d5", "query": "yes 012345", "intent": "explain_or_compare", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:38:48.808520Z", "event_type": "query_event", "session_id": "8919b3f2-be9b-4748-8f64-a7ccebb412d5", "query": "999999", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:38:51.990854Z", "event_type": "query_event", "session_id": "8919b3f2-be9b-4748-8f64-a7ccebb412d5", "query": "098765", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:43:51.278441Z", "event_type": "session_welcome", "session_id": "d5153c02-d5ab-4ba3-898b-b02392d4c2a3", "channel": "api"}
+{"timestamp": "2026-08-20T06:43:58.173707Z", "event_type": "query_event", "session_id": "d5153c02-d5ab-4ba3-898b-b02392d4c2a3", "query": "yes 012345", "intent": "explain_or_compare", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:44:04.170004Z", "event_type": "session_welcome", "session_id": "a3237ae8-91ee-40ae-946b-6bf4f3d672b9", "channel": "api"}
+{"timestamp": "2026-08-20T06:44:10.466255Z", "event_type": "query_event", "session_id": "a3237ae8-91ee-40ae-946b-6bf4f3d672b9", "query": "yes 012345", "intent": "explain_or_compare", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:44:17.869810Z", "event_type": "query_event", "session_id": "a3237ae8-91ee-40ae-946b-6bf4f3d672b9", "query": "098765", "intent": "new_action_address", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:44:24.480023Z", "event_type": "query_event", "session_id": "a3237ae8-91ee-40ae-946b-6bf4f3d672b9", "query": "111111", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:44:28.606727Z", "event_type": "query_event", "session_id": "a3237ae8-91ee-40ae-946b-6bf4f3d672b9", "query": "201012\\", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T06:44:33.249302Z", "event_type": "query_event", "session_id": "a3237ae8-91ee-40ae-946b-6bf4f3d672b9", "query": "Selected plan: Dooab Speed 300M", "intent": "order", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:44:55.277451Z", "event_type": "query_event", "session_id": "a3237ae8-91ee-40ae-946b-6bf4f3d672b9", "query": "[structured customer details submitted]", "intent": "customer_info", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:45:15.518715Z", "event_type": "session_welcome", "session_id": "55a9275d-d905-4b93-8fff-802130849ae6", "channel": "api"}
+{"timestamp": "2026-08-20T06:45:32.623744Z", "event_type": "query_event", "session_id": "55a9275d-d905-4b93-8fff-802130849ae6", "query": "after selecting plan when will the installation be done", "intent": "explain_or_compare", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:45:42.452623Z", "event_type": "query_event", "session_id": "55a9275d-d905-4b93-8fff-802130849ae6", "query": "how much time installation takes?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:46:05.681201Z", "event_type": "query_event", "session_id": "55a9275d-d905-4b93-8fff-802130849ae6", "query": "plans for video calls or work from home", "intent": "explain_or_compare", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:46:16.738195Z", "event_type": "query_event", "session_id": "55a9275d-d905-4b93-8fff-802130849ae6", "query": "plans for video calls", "intent": "explain_or_compare", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:48:23.783523Z", "event_type": "session_welcome", "session_id": "8fef335d-3e4e-4d43-b96a-b7e42f1654a1", "channel": "api"}
+{"timestamp": "2026-08-20T06:48:30.514805Z", "event_type": "query_event", "session_id": "8fef335d-3e4e-4d43-b96a-b7e42f1654a1", "query": "plans for gym ?", "intent": "out_of_scope", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:48:45.011128Z", "event_type": "query_event", "session_id": "8fef335d-3e4e-4d43-b96a-b7e42f1654a1", "query": "how much is installation time", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:48:59.107143Z", "event_type": "query_event", "session_id": "8fef335d-3e4e-4d43-b96a-b7e42f1654a1", "query": "plans for video calls and work from home", "intent": "explain_or_compare", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:49:07.211283Z", "event_type": "query_event", "session_id": "8fef335d-3e4e-4d43-b96a-b7e42f1654a1", "query": "plans for gaming", "intent": "explain_or_compare", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:52:01.663260Z", "event_type": "session_welcome", "session_id": "b32340d2-37b4-44db-a085-92c99d58ef9d", "channel": "api"}
+{"timestamp": "2026-08-20T06:52:15.398797Z", "event_type": "query_event", "session_id": "b32340d2-37b4-44db-a085-92c99d58ef9d", "query": "how much longis the installation time ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:52:21.952844Z", "event_type": "query_event", "session_id": "b32340d2-37b4-44db-a085-92c99d58ef9d", "query": "plans for video calls ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T06:52:30.426078Z", "event_type": "query_event", "session_id": "b32340d2-37b4-44db-a085-92c99d58ef9d", "query": "plans for work form home ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:35:39.686859Z", "event_type": "session_welcome", "session_id": "77b765c5-b7a3-45b0-a7b0-b0c38b349403", "channel": "api"}
+{"timestamp": "2026-08-20T07:36:18.371443Z", "event_type": "session_welcome", "session_id": "316d6347-5330-4326-be36-695a7beaac3a", "channel": "api"}
+{"timestamp": "2026-08-20T07:36:49.301572Z", "event_type": "session_welcome", "session_id": "5ff907bc-7ffc-4340-90ca-493ac96c765e", "channel": "api"}
+{"timestamp": "2026-08-20T07:38:35.510988Z", "event_type": "query_event", "session_id": "5ff907bc-7ffc-4340-90ca-493ac96c765e", "query": "012345", "intent": "new_action_address", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:38:43.379684Z", "event_type": "query_event", "session_id": "5ff907bc-7ffc-4340-90ca-493ac96c765e", "query": "my pin is 999999", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T07:38:49.138285Z", "event_type": "query_event", "session_id": "5ff907bc-7ffc-4340-90ca-493ac96c765e", "query": "my pin is 012345", "intent": "invalid_pincode", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:38:57.686420Z", "event_type": "query_event", "session_id": "5ff907bc-7ffc-4340-90ca-493ac96c765e", "query": "my pin is 1234567", "intent": "invalid_pincode", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:39:09.129981Z", "event_type": "query_event", "session_id": "5ff907bc-7ffc-4340-90ca-493ac96c765e", "query": "my pin is888888", "intent": "explain_or_compare", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:40:04.625912Z", "event_type": "session_welcome", "session_id": "93c17d44-7541-42b5-9ddb-ca29f1ecf79f", "channel": "api"}
+{"timestamp": "2026-08-20T07:41:05.831040Z", "event_type": "query_event", "session_id": "93c17d44-7541-42b5-9ddb-ca29f1ecf79f", "query": "hello can i know about refund policy ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:41:16.894816Z", "event_type": "query_event", "session_id": "93c17d44-7541-42b5-9ddb-ca29f1ecf79f", "query": "installation time ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:41:51.063434Z", "event_type": "query_event", "session_id": "93c17d44-7541-42b5-9ddb-ca29f1ecf79f", "query": "plans for work from home ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:42:04.613321Z", "event_type": "query_event", "session_id": "93c17d44-7541-42b5-9ddb-ca29f1ecf79f", "query": "plans for gaming ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:44:57.843906Z", "event_type": "session_welcome", "session_id": "20910685-52be-4144-98e0-ea2e6d76f755", "channel": "api"}
+{"timestamp": "2026-08-20T07:45:02.726843Z", "event_type": "session_welcome", "session_id": "6fec4031-93fb-4c0d-b20d-d6c53c283896", "channel": "api"}
+{"timestamp": "2026-08-20T07:45:07.031347Z", "event_type": "session_welcome", "session_id": "cb3579ef-a21a-4ee7-a138-67027fce1545", "channel": "api"}
+{"timestamp": "2026-08-20T07:46:09.863625Z", "event_type": "query_event", "session_id": "cb3579ef-a21a-4ee7-a138-67027fce1545", "query": "refund policy ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:46:18.612223Z", "event_type": "query_event", "session_id": "cb3579ef-a21a-4ee7-a138-67027fce1545", "query": "installation time ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:46:27.840704Z", "event_type": "query_event", "session_id": "cb3579ef-a21a-4ee7-a138-67027fce1545", "query": "plans for video calls ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:46:39.865033Z", "event_type": "query_event", "session_id": "cb3579ef-a21a-4ee7-a138-67027fce1545", "query": "plans for gaming/streaming?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:46:55.943757Z", "event_type": "query_event", "session_id": "cb3579ef-a21a-4ee7-a138-67027fce1545", "query": "plans for 4k streaming ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:47:01.407084Z", "event_type": "query_event", "session_id": "cb3579ef-a21a-4ee7-a138-67027fce1545", "query": "okay 999999", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T07:47:07.003869Z", "event_type": "query_event", "session_id": "cb3579ef-a21a-4ee7-a138-67027fce1545", "query": "okay 012345", "intent": "explain_or_compare", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:47:15.340195Z", "event_type": "query_event", "session_id": "cb3579ef-a21a-4ee7-a138-67027fce1545", "query": "okay 201012", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T07:47:20.493369Z", "event_type": "session_welcome", "session_id": "e1cda8fe-def0-42a6-8638-d6f4c99b1b3e", "channel": "api"}
+{"timestamp": "2026-08-20T07:47:28.816656Z", "event_type": "query_event", "session_id": "e1cda8fe-def0-42a6-8638-d6f4c99b1b3e", "query": "okay 201012", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T07:54:08.284957Z", "event_type": "session_welcome", "session_id": "59d662a0-b3c5-4dd0-905e-34c17045f45c", "channel": "api"}
+{"timestamp": "2026-08-20T07:54:16.489505Z", "event_type": "session_welcome", "session_id": "11f08543-0a84-4cf6-abb3-544b89a5c24d", "channel": "api"}
+{"timestamp": "2026-08-20T07:54:29.100572Z", "event_type": "session_welcome", "session_id": "4fbf9484-c520-4547-9cf2-f61cd91d2610", "channel": "api"}
+{"timestamp": "2026-08-20T07:54:46.246730Z", "event_type": "session_welcome", "session_id": "2c3d3209-c33b-4c05-bd77-167750a0057c", "channel": "api"}
+{"timestamp": "2026-08-20T07:55:08.000726Z", "event_type": "session_welcome", "session_id": "08aedb33-b0a5-41cf-8fc7-0e0f0703a18a", "channel": "api"}
+{"timestamp": "2026-08-20T07:55:47.698605Z", "event_type": "session_welcome", "session_id": "c628c0ce-182c-4a49-b1cf-4c98fb14ac0c", "channel": "api"}
+{"timestamp": "2026-08-20T07:56:23.259322Z", "event_type": "query_event", "session_id": "c628c0ce-182c-4a49-b1cf-4c98fb14ac0c", "query": "installation time ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:56:32.581702Z", "event_type": "query_event", "session_id": "c628c0ce-182c-4a49-b1cf-4c98fb14ac0c", "query": "4k streaming plans ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T07:56:38.357821Z", "event_type": "query_event", "session_id": "c628c0ce-182c-4a49-b1cf-4c98fb14ac0c", "query": "okay 201012", "intent": "new_action_address", "mode": "deterministic"}
+{"timestamp": "2026-08-20T08:00:11.137667Z", "event_type": "session_welcome", "session_id": "c5d05ace-45eb-40ed-b35c-403cffd753e6", "channel": "api"}
+{"timestamp": "2026-08-20T08:00:18.060805Z", "event_type": "session_welcome", "session_id": "e87e668c-b4f3-46c7-9ad7-28b7b0538183", "channel": "api"}
+{"timestamp": "2026-08-20T08:13:47.034566Z", "event_type": "session_welcome", "session_id": "a5e9f45b-ed03-4016-b462-ec64d5c80dd8", "channel": "api"}
+{"timestamp": "2026-08-20T08:13:56.150628Z", "event_type": "session_welcome", "session_id": "f4aafc86-c1bd-45e9-ad1f-799d999871c4", "channel": "api"}
+{"timestamp": "2026-08-20T08:14:00.281215Z", "event_type": "session_welcome", "session_id": "ebe22aaf-280f-4b9b-9f9c-02667dab43b6", "channel": "api"}
+{"timestamp": "2026-08-20T08:14:01.414883Z", "event_type": "session_welcome", "session_id": "881716d4-a722-4bd4-8b20-6713d6fb67e4", "channel": "api"}
+{"timestamp": "2026-08-20T08:14:03.658965Z", "event_type": "session_welcome", "session_id": "9ed1a50f-937c-4ba7-bf80-ca52b25f31b6", "channel": "api"}
+{"timestamp": "2026-08-20T08:15:42.191591Z", "event_type": "session_welcome", "session_id": "84adee0c-3314-47db-8cd1-d371e8f1ed64", "channel": "api"}
+{"timestamp": "2026-08-20T08:15:46.848247Z", "event_type": "query_event", "session_id": "84adee0c-3314-47db-8cd1-d371e8f1ed64", "query": "Hi there", "intent": "session_start", "mode": "gemini"}
+{"timestamp": "2026-08-20T08:16:01.603868Z", "event_type": "query_event", "session_id": "84adee0c-3314-47db-8cd1-d371e8f1ed64", "query": "any idea about the installation time ?", "intent": "faq_rag", "mode": "gemini"}
+{"timestamp": "2026-08-20T09:07:33.113871Z", "event_type": "session_welcome", "session_id": "8b6685ef-019d-4b3a-80e2-29a1569c51a6", "channel": "api"}
+{"timestamp": "2026-08-20T09:07:35.386881Z", "event_type": "session_welcome", "session_id": "565639ad-4e64-4fa0-9b0b-cc27582930a0", "channel": "api"}
+{"timestamp": "2026-08-20T09:07:41.975149Z", "event_type": "session_welcome", "session_id": "e36a2fe4-c121-4150-b521-902a674c5647", "channel": "api"}
+{"timestamp": "2026-08-21T04:58:44.005425Z", "event_type": "session_welcome", "session_id": "ea3b628b-b59f-4b8e-a6c7-5545b7daa69c", "channel": "api"}
+{"timestamp": "2026-08-21T04:58:51.050947Z", "event_type": "session_welcome", "session_id": "1a76b738-4b08-4a81-b18f-be05a5165e4b", "channel": "api"}
+{"timestamp": "2026-08-21T04:58:59.853505Z", "event_type": "session_welcome", "session_id": "58b2f116-fb50-4c22-8cfb-5041668b0ab8", "channel": "api"}
+{"timestamp": "2026-08-21T04:59:12.904004Z", "event_type": "session_welcome", "session_id": "fb8d252a-63bc-47b1-afd2-9501c3be3365", "channel": "api"}
+{"timestamp": "2026-08-21T04:59:18.435295Z", "event_type": "session_welcome", "session_id": "62555d34-b362-4195-a2ea-83d7ec3aafa6", "channel": "api"}
+{"timestamp": "2026-08-21T04:59:21.032159Z", "event_type": "session_welcome", "session_id": "e134351b-d62c-4a25-8129-6b743f8c1c9a", "channel": "api"}
+{"timestamp": "2026-08-21T05:21:39.554830Z", "event_type": "session_welcome", "session_id": "5a6b01e1-8fa1-4ad9-ac74-2eeff7d4b8ab", "channel": "api"}
+{"timestamp": "2026-08-21T05:26:27.890027Z", "event_type": "session_welcome", "session_id": "59b86466-1f7f-41b3-a992-bb95a2ce939b", "channel": "api"}
+{"timestamp": "2026-08-21T05:26:41.803570Z", "event_type": "session_welcome", "session_id": "2598925f-7b1a-45d4-83aa-70e3ecc9a33e", "channel": "api"}
+{"timestamp": "2026-08-21T05:26:50.694061Z", "event_type": "session_welcome", "session_id": "6b35b422-9a2c-4ce1-9179-21add82f148e", "channel": "api"}
+{"timestamp": "2026-08-21T05:33:15.443921Z", "event_type": "session_welcome", "session_id": "sess-e2e-1", "channel": "api"}
+{"timestamp": "2026-08-21T05:34:53.322197Z", "event_type": "session_welcome", "session_id": "ea49a706-1506-45e0-bd34-5e81e7f8d608", "channel": "api"}
+{"timestamp": "2026-08-21T05:35:05.672963Z", "event_type": "session_welcome", "session_id": "dc929e35-3c75-44f3-8388-97de2b365728", "channel": "api"}
+{"timestamp": "2026-08-21T05:35:38.577770Z", "event_type": "session_welcome", "session_id": "d0be94c9-42d7-44c8-b415-77531f34b47b", "channel": "api"}
+{"timestamp": "2026-08-21T05:40:37.738313Z", "event_type": "session_welcome", "session_id": "eb80fedb-8819-40c8-a5e3-7ae5a0446676", "channel": "api"}
+{"timestamp": "2026-08-21T05:49:11.035755Z", "event_type": "session_welcome", "session_id": "16e79e6a-5223-4078-b702-a9b2d4c874c3", "channel": "api"}
+{"timestamp": "2026-08-21T05:53:27.831381Z", "event_type": "session_welcome", "session_id": "12599166-acb4-4567-944b-955edee48035", "channel": "api"}
+{"timestamp": "2026-08-21T06:00:25.544145Z", "event_type": "session_welcome", "session_id": "90560cca-05c0-48b8-8da8-de398fb8d15a", "channel": "api"}
+{"timestamp": "2026-08-21T06:04:19.126112Z", "event_type": "session_welcome", "session_id": "d02580d8-cc83-49c1-926e-049f08fdd549", "channel": "api"}
+{"timestamp": "2026-08-21T06:05:30.603867Z", "event_type": "session_welcome", "session_id": "e6072fb4-32a7-442e-815b-fefe8133e2f4", "channel": "api"}
+{"timestamp": "2026-08-21T06:32:27.032372Z", "event_type": "session_welcome", "session_id": "d9b69a40-9000-4cc2-9ccc-c1f3507a27a9", "channel": "api"}
+{"timestamp": "2026-08-21T06:33:23.909338Z", "event_type": "session_welcome", "session_id": "434a5d10-91aa-4d47-8f7e-0fd25db214da", "channel": "api"}
+{"timestamp": "2026-08-21T06:46:43.075305Z", "event_type": "session_welcome", "session_id": "b3cb05be-20c1-4a40-a7ea-7e1ccbabd5aa", "channel": "api"}
+{"timestamp": "2026-08-21T06:51:00.915683Z", "event_type": "session_welcome", "session_id": "fe700d81-b630-4c85-b1c9-6c8dc0e70669", "channel": "api"}
+{"timestamp": "2026-08-21T08:29:55.610135Z", "event_type": "session_welcome", "session_id": "fa6ce145-bd29-47d2-a4f0-302d1f8bd8b4", "channel": "api"}
+{"timestamp": "2026-08-21T08:37:37.772452Z", "event_type": "session_welcome", "session_id": "01ff07a0-1922-4ece-86d4-27ea21f4a527", "channel": "api"}
+{"timestamp": "2026-08-21T08:37:54.658732Z", "event_type": "session_welcome", "session_id": "970bd6ef-1503-4678-a3ca-2aabe78455c5", "channel": "api"}
+{"timestamp": "2026-08-21T11:42:28.345239Z", "event_type": "session_welcome", "session_id": "61fd8dd8-17fb-4ad3-9258-914518be44de", "channel": "api"}
+{"timestamp": "2026-08-21T11:56:55.063921Z", "event_type": "session_welcome", "session_id": "2463abbf-411d-466e-b83f-9c0141bbeae9", "channel": "api"}
+{"timestamp": "2026-08-21T11:57:32.728530Z", "event_type": "session_welcome", "session_id": "8eab61a8-8a6d-4e7f-b402-8dde5087ee45", "channel": "api"}
+{"timestamp": "2026-08-21T12:07:07.258030Z", "event_type": "session_welcome", "session_id": "9cf22f88-5a2f-4a28-a34e-0825f7e3bb17", "channel": "api"}
+{"timestamp": "2026-08-21T12:08:51.287201Z", "event_type": "session_welcome", "session_id": "c5f52a8d-8167-4d2c-b2eb-297ab1e9b19a", "channel": "api"}
+{"timestamp": "2026-08-21T12:11:47.098674Z", "event_type": "session_welcome", "session_id": "3f0fd01b-537b-4c5c-9d13-abf2a3a3d43b", "channel": "api"}
+{"timestamp": "2026-08-23T10:07:32.462316Z", "event_type": "session_welcome", "session_id": "12a374e6-49d4-4de7-9a8b-13ca14f9fbcd", "channel": "api"}
+{"timestamp": "2026-08-23T10:07:44.878474Z", "event_type": "session_welcome", "session_id": "aada1c98-e78e-4ca0-9f90-6a824900c2da", "channel": "api"}
+{"timestamp": "2026-08-23T10:12:24.283671Z", "event_type": "session_welcome", "session_id": "b024c27f-41d3-46a9-a52b-aa2bb14647d3", "channel": "api"}
+{"timestamp": "2026-08-23T10:15:24.315512Z", "event_type": "session_welcome", "session_id": "0d231d00-6791-4e81-939c-0dfbfc71dcfa", "channel": "api"}
+{"timestamp": "2026-08-23T10:16:23.746877Z", "event_type": "session_welcome", "session_id": "fc0d7d8c-65a8-4ec6-b5ed-54cd84f8b01f", "channel": "api"}
+{"timestamp": "2026-08-23T10:20:15.730291Z", "event_type": "session_welcome", "session_id": "a0987ca2-caff-4710-89b8-c7344bf79714", "channel": "api"}
+{"timestamp": "2026-08-23T10:25:24.547543Z", "event_type": "session_welcome", "session_id": "3b2b1e29-b3cd-4686-9093-64933aa25350", "channel": "api"}
+{"timestamp": "2026-08-23T10:25:49.783633Z", "event_type": "session_welcome", "session_id": "286bf998-cef7-4e40-82f7-4d580357a187", "channel": "api"}
+{"timestamp": "2026-08-23T10:47:24.070548Z", "event_type": "session_welcome", "session_id": "483ba4c3-a607-4adb-af7c-7b734355c321", "channel": "api"}
+{"timestamp": "2026-08-26T04:32:10.594048Z", "event_type": "session_start", "session_id": "d342d5cb29594a1080322ea8c79dd2b9", "channel": "api"}
+{"timestamp": "2026-08-26T04:32:13.343481Z", "event_type": "pincode_check", "session_id": "d342d5cb29594a1080322ea8c79dd2b9", "pincode": "110001", "street_address": null, "serviceable": true, "circle": "Delhi NCR"}
+{"timestamp": "2026-08-26T04:33:15.808503Z", "event_type": "session_start", "session_id": "82c20c416c1648b192b88dbccbe4916f", "channel": "api"}
+{"timestamp": "2026-08-26T04:33:17.494628Z", "event_type": "pincode_check", "session_id": "82c20c416c1648b192b88dbccbe4916f", "pincode": "110001", "street_address": null, "serviceable": true, "circle": "Delhi NCR"}

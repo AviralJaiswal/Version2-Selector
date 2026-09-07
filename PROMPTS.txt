@@ -1,0 +1,358 @@
+# Signal Selector backend LLM prompts
+#
+# Edit prompt text between BEGIN_PROMPT and END_PROMPT markers.
+# Runtime variables use {{placeholder}} tokens - substituted via str.format
+# after {{ }} is converted to { } by the loader.
+#
+# Every prompt call site in the codebase is keyed here. Do not remove a key
+# that is referenced in code without also updating the code.
+
+BEGIN_PROMPT llm.gemini_system_instruction
+[System Instruction]: {{system}}
+END_PROMPT llm.gemini_system_instruction
+
+BEGIN_PROMPT llm.generate_json.response_suffix
+Respond with valid JSON only.
+END_PROMPT llm.generate_json.response_suffix
+
+BEGIN_PROMPT llm.generate_json.default_system
+You return strict JSON objects only, with no markdown fences.
+END_PROMPT llm.generate_json.default_system
+
+BEGIN_PROMPT llm.classify_conversation_route
+Classify the customer message as either a transaction-flow action or a knowledge/FAQ question for a telecom broadband assistant.
+
+Context:
+session_mode: {{session_mode}}
+workflow_state: {{workflow_state}}
+customer_message: {{message}}
+- If customer_message is empty, ambiguous, or only asks for information, choose KNOWLEDGE.
+- If session_mode or workflow_state is missing, classify from customer_message alone.
+
+Requirements:
+- Return exactly one JSON object with one key named "route".
+- route must be exactly one of: TRANSACTION, KNOWLEDGE.
+- Choose TRANSACTION for explicit order intent, coverage/serviceability checks, new connection requests, valid 6-digit PIN codes, full street addresses, plan purchase/checkout selection, customer contact details, or appointment slots.
+- Choose KNOWLEDGE for plan comparisons, recommendations before purchase, prices, speeds, OTT benefits, routers, installation fees, policies, troubleshooting, or general broadband questions.
+- If a message contains both an FAQ and an explicit order action, choose TRANSACTION.
+- Do not include markdown, code fences, explanations, or extra keys.
+- Maximum 30 characters.
+END_PROMPT llm.classify_conversation_route
+
+BEGIN_PROMPT llm.classify_conversation_route.system_json
+Return strict JSON with a single route field. No markdown.
+END_PROMPT llm.classify_conversation_route.system_json
+
+BEGIN_PROMPT llm.classify_conversation_route.system_fallback
+Reply with only TRANSACTION or KNOWLEDGE.
+END_PROMPT llm.classify_conversation_route.system_fallback
+
+BEGIN_PROMPT plan_recommendation.conversational
+Select the single best matching broadband plan for the customer's usage needs.
+
+Available Plans:
+{{context_str}}
+
+Customer Input:
+- Number of users: {{users_or_query}}
+- Number of connected devices: {{devices_or_query}}
+- Primary usage purpose: {{purpose_or_query}}
+- Target Recommended Speed: {{target_speed}} Mbps (Price tier matching ₹499 for 40M, ₹799 for 100M, ₹999 for 200M, ₹1499 for 300M, ₹2499 for 500M, ₹3999 for 1000M)
+
+Rules:
+- For minimal usage (1-2 users, minimal devices, basic browsing), pick the Basic 40M plan (₹499/month).
+- For heavy usage (many users/devices or 4K/gaming), pick a high-speed plan ({{target_speed}} Mbps or higher).
+- Return exactly one JSON object with keys "recommended_plan_name" and "short_intro".
+- recommended_plan_name must match one plan name from Available Plans.
+- short_intro must be friendly, enthusiastic, and under 18 words.
+END_PROMPT plan_recommendation.conversational
+
+BEGIN_PROMPT service.address_confirmation
+Generate a short 2-line customer-facing message for a verified broadband service address.
+
+Context:
+formatted_address: {{formatted_address}}
+- If formatted_address is missing or empty, refer to "your submitted address" and do not invent address details.
+
+Requirements:
+- Line 1: State that the address is verified as serviceable, and explicitly ask: "Is this your correct address?"
+- Line 2: On a new line, state that confirming this allows us to proceed with showing the available fiber plans in your region.
+- Line 1 MUST contain a question asking if the address is correct (ending with a question mark).
+- Line 2 must be an explanatory statement starting with phrases like "So we can proceed...", "Once confirmed...", or "Confirming this allows us to...".
+- Put Line 2 on its own line using a newline character.
+- Do not mention booking, payment, appointments, or customer details.
+- Maximum 35 words total.
+- No markdown formatting.
+END_PROMPT service.address_confirmation
+
+BEGIN_PROMPT service.plan_permission
+Generate a short customer-facing question asking permission to show available fiber plans.
+
+Context:
+formatted_address: {{formatted_address}}
+- If formatted_address is missing or empty, say "your confirmed address" and do not invent address details.
+
+Requirements:
+- Acknowledge that the address is confirmed.
+- Ask whether to show available fiber plans for that location.
+- Do not mention payment, booking, appointment, or customer details.
+- Use one sentence.
+- Maximum 20 words.
+- No markdown.
+END_PROMPT service.plan_permission
+
+BEGIN_PROMPT service.confirmation_intent
+Classify the customer's response to the current yes/no broadband-flow question.
+
+Context:
+message: {{message}}
+- If message is empty, vague, or unrelated to the yes/no question, classify it as OTHER.
+
+Requirements:
+- Return exactly one JSON object with one key named "intent".
+- intent must be exactly one of: CONFIRM, DENY, OTHER.
+- Use CONFIRM when the customer agrees, confirms, says the address is correct, asks to proceed, or asks to show plans.
+- Use DENY when the customer disagrees, says the address is wrong, wants a different address, wants to change details, or cancels.
+- Use OTHER for questions, ambiguous replies, mixed yes/no replies, or unrelated input.
+- Do not include markdown, code fences, explanations, or extra keys.
+- Maximum 60 characters.
+END_PROMPT service.confirmation_intent
+
+BEGIN_PROMPT service.confirmation_intent.system
+Return strict JSON with intent field only.
+END_PROMPT service.confirmation_intent.system
+
+BEGIN_PROMPT service.plan_selection_intent
+Classify the customer's message during the plan selection stage of a broadband order.
+
+Context:
+message: {{message}}
+- If customer says "yes", "sure", "yeah", "yes please", or asks for a recommendation, classify as RECOMMENDATION_REQUEST.
+- If message is a specific question about router, pricing, installation, refund, or policy, classify as FAQ_QUESTION.
+
+Requirements:
+- Return exactly one JSON object with one key named "intent".
+- intent must be exactly one of: RECOMMENDATION_REQUEST, FAQ_QUESTION.
+- Do not include markdown, code fences, explanations, or extra keys.
+- Maximum 80 characters.
+END_PROMPT service.plan_selection_intent
+
+BEGIN_PROMPT service.plan_selection_intent.system
+Return strict JSON with intent field only.
+END_PROMPT service.plan_selection_intent.system
+
+BEGIN_PROMPT service.plans_unlocked
+Generate an enthusiastic, celebratory two-line customer-facing message announcing that regional fiber plans have been discovered and unlocked.
+
+Context:
+formatted_address: {{formatted_address}}
+state_or_region: {{state_or_region}}
+plan_count: {{plan_count}}
+- If formatted_address is missing, refer to "your confirmed address".
+- If state_or_region is missing, say "your region".
+- If plan_count is 0 or missing, say "available fiber plan options" without claiming a number.
+
+Requirements:
+- Line 1 must sound joyful, positive, and celebrate the achievement of discovering high-speed fiber coverage for their location (e.g. "Great news!", "Fantastic news!", "Awesome news! High-speed fiber plans are available for {{state_or_region}} listed below.").
+- Line 2 must ask: "Which plan suits you best, or would you like a recommendation?"
+- Put Line 2 on a new line.
+- Do not mention booking, payment, appointments, or customer details.
+- Maximum 35 words total.
+- No markdown.
+END_PROMPT service.plans_unlocked
+
+BEGIN_PROMPT service.pincode_only
+Generate a short customer-facing message explaining that PIN-code-only input cannot complete premise qualification.
+
+Context:
+pincode: {{pincode}}
+city: {{city}}
+state: {{state}}
+location_info: {{location_info}}
+- If city or state is missing, omit that locality detail instead of inventing it.
+- If pincode is missing, ask for both complete street address and a valid 6-digit PIN code.
+
+Requirements:
+- Politely confirm the PIN code area is eligible or pending exact premise verification.
+- Make clear that the PIN code alone is insufficient.
+- Ask for the complete street address: house/flat number, building name if available, street, and locality.
+- Do not ask for plan selection, booking, payment, or appointment details.
+- Maximum 35 words.
+- No markdown.
+END_PROMPT service.pincode_only
+
+BEGIN_PROMPT service.complete_address
+Generate a short, friendly customer-facing message for a customer wanting to order/book a new broadband connection.
+
+Context:
+pincode: {{pincode}}
+pin_context: {{pin_context}}
+{{user_context}}
+
+Requirements:
+- Politely acknowledge their interest in getting a new connection.
+- Request their complete street address (including house/flat number, building name, street, area/locality, and 6-digit PIN code) to check exact serviceability and local plan availability.
+- Do NOT list, mention, or dump plan names, speeds, or prices.
+- Do NOT mention booking confirmation, payment, or technician appointment slots yet.
+- Maximum 35 words.
+- No markdown formatting or bullet points.
+END_PROMPT service.complete_address
+
+BEGIN_PROMPT service.invalid_pincode
+Generate a short customer-facing message for an invalid Indian postal PIN code.
+
+Context:
+pincode: {{pincode}}
+- If pincode is empty, refer to "that PIN code" instead of quoting an empty value.
+
+Requirements:
+- State that the supplied PIN code is invalid.
+- Explain that valid Indian PIN codes are 6 digits and start with digits 1 through 8.
+- Ask for the complete street address with the correct PIN code.
+- Do not mention serviceability, plans, booking, payment, or appointments.
+- Maximum 30 words.
+- No markdown.
+END_PROMPT service.invalid_pincode
+
+BEGIN_PROMPT service.unserviceable
+Generate a polite customer-facing message for a location where fiber service is unavailable.
+
+Context:
+pincode: {{pincode}}
+fallback_message: {{fallback_message}}
+- If pincode is missing, say "this area" instead of inventing a PIN code.
+- If fallback_message contains a specific city or state, keep the meaning consistent but do not copy technical wording.
+
+Requirements:
+- State that fiber service is currently unavailable for the submitted area.
+- Mention that coverage is expanding.
+- Ask whether the customer wants to check a different complete street address with PIN code.
+- Do not offer plans, booking, payment, or appointments.
+- Maximum 30 words.
+- No markdown.
+END_PROMPT service.unserviceable
+
+BEGIN_PROMPT service.escape_reset
+Generate a friendly customer-facing message acknowledging that the customer wants to reset or change address.
+
+Context:
+No interpolated variables are available for this message.
+- Since no previous address should be reused, ask for a fresh complete address.
+
+Requirements:
+- Acknowledge the reset or address change.
+- Ask for the complete street address: house/flat number, street, locality, and PIN code.
+- Make clear that both address and PIN code are required for coverage verification.
+- Do not mention plans, booking, payment, or appointments.
+- Use one sentence.
+- Maximum 25 words.
+- No markdown.
+END_PROMPT service.escape_reset
+
+BEGIN_PROMPT welcome.styles
+Greet the user warmly as Signal Selector's broadband AI assistant.
+Greet the user enthusiastically as Signal Selector's fiber connection guide.
+Provide a friendly, professional welcome as Signal Selector's broadband specialist.
+Give a concise, modern chat greeting introducing Signal Selector broadband assistance.
+END_PROMPT welcome.styles
+
+BEGIN_PROMPT welcome.existing
+Generate a concise customer-facing welcome greeting for an existing Signal Selector customer.
+
+Context:
+chosen_style: {{chosen_style}}
+profile: {{profile}}
+- If profile is existing, focus on current-account support and upgrades.
+
+Requirements:
+- Follow chosen_style naturally.
+- Welcome the customer back to the Signal Selector portal.
+- Ask how you can help with current plan, connection troubleshooting, router specs, or plan upgrades.
+- Do not ask for address, PIN code, payment, booking, or appointment details.
+- Maximum 35 words.
+- No markdown.
+END_PROMPT welcome.existing
+
+BEGIN_PROMPT welcome.general
+Generate a concise customer-facing welcome greeting for a new Signal Selector broadband visitor.
+
+Context:
+chosen_style: {{chosen_style}}
+profile: {{profile}}
+- If profile is missing or not existing, treat the visitor as a general new-service shopper.
+
+Requirements:
+- Follow chosen_style naturally.
+- Offer help with plans, router specs, installation timelines, or serviceability.
+- If mentioning serviceability, ask for a complete street address with building/flat number, street name, area, and PIN code.
+- Do NOT ask for just a 6-digit pincode; ask for their complete street address.
+- Mention that exact coverage and local plans are checked through our mapping provider.
+- Do not mention payment, booking, or appointments.
+- Maximum 35 words.
+- No markdown.
+END_PROMPT welcome.general
+
+BEGIN_PROMPT welcome.followups
+Generate 3 concise, highly relevant recommended user follow-up response options based on the conversation context.
+
+Context:
+profile: {{profile}}
+user_previous_message: {{message}}
+assistant_last_response: {{answer}}
+
+Requirements:
+- Return a JSON object with a single key "suggestions" containing an array of 3 short text strings (3 to 7 words each).
+- The suggestions MUST mix natural first-person user action statements (such as "I want a new connection", "I want to book a connection", "I need a high-speed gaming plan", "I want to upgrade my plan") alongside relevant user queries.
+- Do NOT make them all questions. Include clear intent statements like "I want to get a new fiber connection".
+- All suggestions must be generated dynamically by the LLM based on the conversation context without static keyword templates.
+- Return valid JSON only with key "suggestions".
+END_PROMPT welcome.followups
+
+BEGIN_PROMPT welcome.followups.system
+Return strict JSON with suggestions array.
+END_PROMPT welcome.followups.system
+
+BEGIN_PROMPT address.street_extraction
+Determine whether the customer message contains a specific physical street address for broadband service qualification.
+
+Context:
+customer_message: {{text}}
+pincode: {{pincode}}
+- If pincode is missing, still classify whether a street address is present.
+- If customer_message is empty, intent-only, or only contains a PIN code, return has_street_address as false.
+
+Requirements:
+- Return exactly one JSON object with keys "has_street_address" and "street_address".
+- Set has_street_address to true only when the message contains a house/flat/plot number, apartment/building name, street/road/lane, colony, nagar, sector, block, or comparable premise detail.
+- Set has_street_address to false for general questions, plan discovery requests, serviceability requests, city-only input, or pincode-only input.
+- If true, street_address must contain only the extracted street/premise portion and must exclude the PIN code.
+- If false, street_address must be null.
+- If the message contains conflicting or ambiguous location text, return false instead of guessing.
+- Do not include markdown, code fences, explanations, or extra keys.
+- Maximum 90 characters for street_address.
+END_PROMPT address.street_extraction
+
+BEGIN_PROMPT address.street_extraction.system
+You return strict JSON only.
+END_PROMPT address.street_extraction.system
+
+BEGIN_PROMPT rag.grounded_faq_answer
+Generate a clear, friendly, customer-facing answer strictly grounded on the supplied knowledge context.
+
+Knowledge Context:
+{{context}}
+
+Customer Query:
+{{user_query}}
+
+Instructions:
+- Answer the customer's query directly and accurately based on the Knowledge Context above.
+- If the query is about specific policy or info (e.g. Refund Policy, Installation Timelines, Hardware, SLA, KYC), summarize the exact details from the Knowledge Context.
+- If the query explicitly asks to see available plans or pricing, list the main Fiber Broadband plans (speeds & prices) from the context.
+- Keep the response professional, clear, and concise (under 120 words).
+END_PROMPT rag.grounded_faq_answer
+
+BEGIN_PROMPT plan_service.gemini_reasoning
+Rank these regional telecom plans for preference: {{preference}}. Return one short reason per plan_id.
+{{plans_context}}
+END_PROMPT plan_service.gemini_reasoning

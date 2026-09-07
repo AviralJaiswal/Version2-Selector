@@ -1,0 +1,11 @@
+customer_id,name,phone,email,existing_pincode,current_plan_id,subscription_status,joined_on
+CUST-0001,Rahul Sharma,9876543210,rahul.sharma@example.com,110001,PLAN-01,ACTIVE,2024-03-15
+CUST-0002,Priya Nair,9876543211,priya.nair@example.com,110002,PLAN-03,ACTIVE,2023-11-02
+CUST-0003,Arjun Reddy,9876543212,arjun.reddy@example.com,110003,PLAN-00,ACTIVE,2025-01-20
+CUST-0004,Sneha Iyer,9876543213,sneha.iyer@example.com,110004,PLAN-08,ACTIVE,2024-07-08
+CUST-0005,Karthik Menon,9876543214,karthik.menon@example.com,110005,PLAN-02,ACTIVE,2024-05-30
+CUST-0006,Ananya Gupta,9876543215,ananya.gupta@example.com,110001,PLAN-04,ACTIVE,2023-08-14
+CUST-0007,Vikram Rao,9876543216,vikram.rao@example.com,110002,PLAN-06,ACTIVE,2025-02-11
+CUST-0008,Divya Krishnan,9876543217,divya.krishnan@example.com,110003,PLAN-09,ACTIVE,2024-09-25
+CUST-0009,Sanjay Pillai,9876543218,sanjay.pillai@example.com,110004,PLAN-05,ACTIVE,2023-12-19
+CUST-0010,Meera Bhat,9876543219,meera.bhat@example.com,110005,PLAN-07,ACTIVE,2024-10-03

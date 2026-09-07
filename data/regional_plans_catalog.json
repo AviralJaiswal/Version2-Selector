@@ -1,0 +1,1705 @@
+{
+  "circles": {
+    "Delhi NCR": [
+      {
+        "plan_id": "PLN-DEL-40M",
+        "name": "Delhi NCR Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Delhi NCR ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-DEL-100M",
+        "name": "Delhi NCR Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-DEL-200M",
+        "name": "Delhi NCR Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Delhi NCR with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-DEL-300M",
+        "name": "Delhi NCR Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Delhi NCR with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-DEL-500M",
+        "name": "Delhi NCR Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-DEL-1G",
+        "name": "Delhi NCR Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Mumbai": [
+      {
+        "plan_id": "PLN-MUM-40M",
+        "name": "Mumbai Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Mumbai ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-MUM-100M",
+        "name": "Mumbai Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-MUM-200M",
+        "name": "Mumbai Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Mumbai with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-MUM-300M",
+        "name": "Mumbai Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Mumbai with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-MUM-500M",
+        "name": "Mumbai Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-MUM-1G",
+        "name": "Mumbai Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Bengaluru": [
+      {
+        "plan_id": "PLN-BEN-40M",
+        "name": "Bengaluru Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Bengaluru ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-BEN-100M",
+        "name": "Bengaluru Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-BEN-200M",
+        "name": "Bengaluru Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Bengaluru with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-BEN-300M",
+        "name": "Bengaluru Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Bengaluru with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-BEN-500M",
+        "name": "Bengaluru Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-BEN-1G",
+        "name": "Bengaluru Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Hyderabad": [
+      {
+        "plan_id": "PLN-HYD-40M",
+        "name": "Hyderabad Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Hyderabad ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-HYD-100M",
+        "name": "Hyderabad Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-HYD-200M",
+        "name": "Hyderabad Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Hyderabad with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-HYD-300M",
+        "name": "Hyderabad Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Hyderabad with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-HYD-500M",
+        "name": "Hyderabad Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-HYD-1G",
+        "name": "Hyderabad Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Chennai": [
+      {
+        "plan_id": "PLN-CHE-40M",
+        "name": "Chennai Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Chennai ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-CHE-100M",
+        "name": "Chennai Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-CHE-200M",
+        "name": "Chennai Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Chennai with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-CHE-300M",
+        "name": "Chennai Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Chennai with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-CHE-500M",
+        "name": "Chennai Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-CHE-1G",
+        "name": "Chennai Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Kolkata": [
+      {
+        "plan_id": "PLN-KOL-40M",
+        "name": "Kolkata Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Kolkata ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-KOL-100M",
+        "name": "Kolkata Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-KOL-200M",
+        "name": "Kolkata Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Kolkata with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-KOL-300M",
+        "name": "Kolkata Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Kolkata with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-KOL-500M",
+        "name": "Kolkata Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-KOL-1G",
+        "name": "Kolkata Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Maharashtra & Goa": [
+      {
+        "plan_id": "PLN-MAH-40M",
+        "name": "Maharashtra & Goa Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Maharashtra & Goa ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-MAH-100M",
+        "name": "Maharashtra & Goa Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-MAH-200M",
+        "name": "Maharashtra & Goa Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Maharashtra & Goa with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-MAH-300M",
+        "name": "Maharashtra & Goa Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Maharashtra & Goa with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-MAH-500M",
+        "name": "Maharashtra & Goa Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-MAH-1G",
+        "name": "Maharashtra & Goa Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Gujarat": [
+      {
+        "plan_id": "PLN-GUJ-40M",
+        "name": "Gujarat Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Gujarat ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-GUJ-100M",
+        "name": "Gujarat Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-GUJ-200M",
+        "name": "Gujarat Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Gujarat with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-GUJ-300M",
+        "name": "Gujarat Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Gujarat with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-GUJ-500M",
+        "name": "Gujarat Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-GUJ-1G",
+        "name": "Gujarat Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Andhra Pradesh & Telangana": [
+      {
+        "plan_id": "PLN-AND-40M",
+        "name": "Andhra Pradesh & Telangana Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Andhra Pradesh & Telangana ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-AND-100M",
+        "name": "Andhra Pradesh & Telangana Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-AND-200M",
+        "name": "Andhra Pradesh & Telangana Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Andhra Pradesh & Telangana with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-AND-300M",
+        "name": "Andhra Pradesh & Telangana Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Andhra Pradesh & Telangana with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-AND-500M",
+        "name": "Andhra Pradesh & Telangana Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-AND-1G",
+        "name": "Andhra Pradesh & Telangana Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Karnataka": [
+      {
+        "plan_id": "PLN-KAR-40M",
+        "name": "Karnataka Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Karnataka ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-KAR-100M",
+        "name": "Karnataka Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-KAR-200M",
+        "name": "Karnataka Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Karnataka with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-KAR-300M",
+        "name": "Karnataka Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Karnataka with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-KAR-500M",
+        "name": "Karnataka Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-KAR-1G",
+        "name": "Karnataka Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Tamil Nadu": [
+      {
+        "plan_id": "PLN-TAM-40M",
+        "name": "Tamil Nadu Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Tamil Nadu ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-TAM-100M",
+        "name": "Tamil Nadu Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-TAM-200M",
+        "name": "Tamil Nadu Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Tamil Nadu with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-TAM-300M",
+        "name": "Tamil Nadu Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Tamil Nadu with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-TAM-500M",
+        "name": "Tamil Nadu Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-TAM-1G",
+        "name": "Tamil Nadu Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Kerala": [
+      {
+        "plan_id": "PLN-KER-40M",
+        "name": "Kerala Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Kerala ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-KER-100M",
+        "name": "Kerala Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-KER-200M",
+        "name": "Kerala Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Kerala with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-KER-300M",
+        "name": "Kerala Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Kerala with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-KER-500M",
+        "name": "Kerala Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-KER-1G",
+        "name": "Kerala Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Punjab & Haryana": [
+      {
+        "plan_id": "PLN-PUN-40M",
+        "name": "Punjab & Haryana Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Punjab & Haryana ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-PUN-100M",
+        "name": "Punjab & Haryana Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-PUN-200M",
+        "name": "Punjab & Haryana Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Punjab & Haryana with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-PUN-300M",
+        "name": "Punjab & Haryana Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Punjab & Haryana with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-PUN-500M",
+        "name": "Punjab & Haryana Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-PUN-1G",
+        "name": "Punjab & Haryana Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "UP East": [
+      {
+        "plan_id": "PLN-UP-40M",
+        "name": "UP East Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for UP East ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-UP-100M",
+        "name": "UP East Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-UP-200M",
+        "name": "UP East Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for UP East with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-UP-300M",
+        "name": "UP East Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for UP East with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-UP-500M",
+        "name": "UP East Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-UP-1G",
+        "name": "UP East Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "UP West": [
+      {
+        "plan_id": "PLN-UP-40M",
+        "name": "UP West Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for UP West ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-UP-100M",
+        "name": "UP West Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-UP-200M",
+        "name": "UP West Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for UP West with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-UP-300M",
+        "name": "UP West Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for UP West with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-UP-500M",
+        "name": "UP West Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-UP-1G",
+        "name": "UP West Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Rajasthan": [
+      {
+        "plan_id": "PLN-RAJ-40M",
+        "name": "Rajasthan Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Rajasthan ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-RAJ-100M",
+        "name": "Rajasthan Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-RAJ-200M",
+        "name": "Rajasthan Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Rajasthan with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-RAJ-300M",
+        "name": "Rajasthan Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Rajasthan with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-RAJ-500M",
+        "name": "Rajasthan Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-RAJ-1G",
+        "name": "Rajasthan Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "West Bengal & Sikkim": [
+      {
+        "plan_id": "PLN-WES-40M",
+        "name": "West Bengal & Sikkim Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for West Bengal & Sikkim ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-WES-100M",
+        "name": "West Bengal & Sikkim Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-WES-200M",
+        "name": "West Bengal & Sikkim Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for West Bengal & Sikkim with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-WES-300M",
+        "name": "West Bengal & Sikkim Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for West Bengal & Sikkim with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-WES-500M",
+        "name": "West Bengal & Sikkim Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-WES-1G",
+        "name": "West Bengal & Sikkim Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Bihar & Jharkhand": [
+      {
+        "plan_id": "PLN-BIH-40M",
+        "name": "Bihar & Jharkhand Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Bihar & Jharkhand ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-BIH-100M",
+        "name": "Bihar & Jharkhand Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-BIH-200M",
+        "name": "Bihar & Jharkhand Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Bihar & Jharkhand with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-BIH-300M",
+        "name": "Bihar & Jharkhand Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Bihar & Jharkhand with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-BIH-500M",
+        "name": "Bihar & Jharkhand Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-BIH-1G",
+        "name": "Bihar & Jharkhand Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "Odisha": [
+      {
+        "plan_id": "PLN-ODI-40M",
+        "name": "Odisha Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for Odisha ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-ODI-100M",
+        "name": "Odisha Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-ODI-200M",
+        "name": "Odisha Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for Odisha with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-ODI-300M",
+        "name": "Odisha Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for Odisha with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-ODI-500M",
+        "name": "Odisha Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-ODI-1G",
+        "name": "Odisha Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "North East & Assam": [
+      {
+        "plan_id": "PLN-NOR-40M",
+        "name": "North East & Assam Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for North East & Assam ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-NOR-100M",
+        "name": "North East & Assam Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-NOR-200M",
+        "name": "North East & Assam Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for North East & Assam with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-NOR-300M",
+        "name": "North East & Assam Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for North East & Assam with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-NOR-500M",
+        "name": "North East & Assam Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-NOR-1G",
+        "name": "North East & Assam Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ],
+    "MP & Chhattisgarh": [
+      {
+        "plan_id": "PLN-MP-40M",
+        "name": "MP & Chhattisgarh Basic 40M",
+        "speed_mbps": 40,
+        "price_inr": 499,
+        "type": "fiber",
+        "reason": "40 Mbps plan for MP & Chhattisgarh ideal for basic web browsing and standard streaming.",
+        "ott_bundle": []
+      },
+      {
+        "plan_id": "PLN-MP-100M",
+        "name": "MP & Chhattisgarh Standard 100M",
+        "speed_mbps": 100,
+        "price_inr": 799,
+        "type": "fiber",
+        "reason": "100 Mbps fiber for HD streaming and multiple devices.",
+        "ott_bundle": [
+          "Disney+ Hotstar"
+        ]
+      },
+      {
+        "plan_id": "PLN-MP-200M",
+        "name": "MP & Chhattisgarh Entertainment 200M",
+        "speed_mbps": 200,
+        "price_inr": 999,
+        "type": "fiber",
+        "reason": "200 Mbps plan for MP & Chhattisgarh with OTT benefits for family entertainment.",
+        "ott_bundle": [
+          "Disney+ Hotstar",
+          "Amazon Prime",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-MP-300M",
+        "name": "MP & Chhattisgarh Professional 300M",
+        "speed_mbps": 300,
+        "price_inr": 1499,
+        "type": "fiber",
+        "reason": "300 Mbps high-speed plan for MP & Chhattisgarh with premium OTT bundles.",
+        "ott_bundle": [
+          "Netflix Basic",
+          "Amazon Prime",
+          "Disney+ Hotstar",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-MP-500M",
+        "name": "MP & Chhattisgarh Max 500M",
+        "speed_mbps": 500,
+        "price_inr": 2499,
+        "type": "fiber",
+        "reason": "500 Mbps extreme speed for large households and 4K streaming.",
+        "ott_bundle": [
+          "Netflix Standard",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5"
+        ]
+      },
+      {
+        "plan_id": "PLN-MP-1G",
+        "name": "MP & Chhattisgarh Infinity 1G",
+        "speed_mbps": 1000,
+        "price_inr": 3999,
+        "type": "fiber",
+        "reason": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes.",
+        "ott_bundle": [
+          "Netflix Premium 4K",
+          "Amazon Prime",
+          "Disney+ Hotstar Premium",
+          "SonyLIV",
+          "Zee5",
+          "Apple TV+"
+        ]
+      }
+    ]
+  }
+}

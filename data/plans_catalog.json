@@ -1,0 +1,111 @@
+{
+  "circles": [
+    "Delhi NCR",
+    "Mumbai",
+    "Bengaluru",
+    "Hyderabad",
+    "Chennai",
+    "Kolkata",
+    "Andhra Pradesh & Telangana",
+    "Karnataka",
+    "Tamil Nadu",
+    "Maharashtra & Goa",
+    "UP East",
+    "UP West",
+    "Punjab & Haryana",
+    "Kerala",
+    "Gujarat",
+    "Rajasthan",
+    "Bihar & Jharkhand",
+    "Odisha",
+    "North East & Assam",
+    "MP & Chhattisgarh"
+  ],
+  "plans": [
+    {
+      "plan_id": "PLAN-00",
+      "name": "Basic 40M",
+      "speed_mbps": 40,
+      "price_inr": 499,
+      "type": "fiber",
+      "min_speed_required": 20,
+      "ott_bundle": [],
+      "description": "40 Mbps plan ideal for basic web browsing and standard streaming."
+    },
+    {
+      "plan_id": "PLAN-01",
+      "name": "Standard 100M",
+      "speed_mbps": 100,
+      "price_inr": 799,
+      "type": "fiber",
+      "min_speed_required": 50,
+      "ott_bundle": [
+        "Disney+ Hotstar"
+      ],
+      "description": "100 Mbps fiber for HD streaming and multiple devices."
+    },
+    {
+      "plan_id": "PLAN-02",
+      "name": "Entertainment 200M",
+      "speed_mbps": 200,
+      "price_inr": 999,
+      "type": "fiber",
+      "min_speed_required": 100,
+      "ott_bundle": [
+        "Disney+ Hotstar",
+        "Amazon Prime",
+        "Zee5"
+      ],
+      "description": "200 Mbps plan with OTT benefits for family entertainment."
+    },
+    {
+      "plan_id": "PLAN-03",
+      "name": "Professional 300M",
+      "speed_mbps": 300,
+      "price_inr": 1499,
+      "type": "fiber",
+      "min_speed_required": 150,
+      "ott_bundle": [
+        "Netflix Basic",
+        "Amazon Prime",
+        "Disney+ Hotstar",
+        "SonyLIV",
+        "Zee5"
+      ],
+      "description": "300 Mbps high-speed plan with premium OTT bundles."
+    },
+    {
+      "plan_id": "PLAN-04",
+      "name": "Max 500M",
+      "speed_mbps": 500,
+      "price_inr": 2499,
+      "type": "fiber",
+      "min_speed_required": 250,
+      "ott_bundle": [
+        "Netflix Standard",
+        "Amazon Prime",
+        "Disney+ Hotstar Premium",
+        "SonyLIV",
+        "Zee5"
+      ],
+      "description": "500 Mbps extreme speed for large households and 4K streaming."
+    },
+    {
+      "plan_id": "PLAN-05",
+      "name": "Infinity 1G",
+      "speed_mbps": 1000,
+      "price_inr": 3999,
+      "type": "fiber",
+      "min_speed_required": 500,
+      "ott_bundle": [
+        "Netflix Premium 4K",
+        "Amazon Prime",
+        "Disney+ Hotstar Premium",
+        "SonyLIV",
+        "Zee5",
+        "Apple TV+"
+      ],
+      "description": "1 Gbps Ultra Giga Speed for intensive gaming, 4K streaming, and smart homes."
+    }
+  ]
+}

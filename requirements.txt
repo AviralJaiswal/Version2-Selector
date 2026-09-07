@@ -1,0 +1,18 @@
+fastapi>=0.110.0
+uvicorn>=0.28.0
+pydantic[email]>=2.6.0
+email-validator>=2.0.0
+sqlalchemy>=2.0.0
+chromadb>=0.4.0
+langchain-core>=0.1.0
+requests>=2.31.0
+pydantic-settings>=2.0.0
+python-dotenv>=1.0.0
+razorpay>=1.4.1
+
+# Voice mode (speech-to-text / text-to-speech) - see app/services/voice_service.py
+faster-whisper>=1.0.0
+transformers>=4.44.0
+torch>=2.2.0
+soundfile>=0.12.1
+git+https://github.com/huggingface/parler-tts.git
