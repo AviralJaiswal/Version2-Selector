@@ -354,11 +354,6 @@ def _is_order_intent_trigger(text: str) -> bool:
     """Check if text expresses explicit intent to start an order or check serviceability."""
     low = text.lower().strip()
 
-    # 0. Off-topic queries (e.g. gym, workout, recipe, cooking) should never trigger order flow
-    off_topic_words = ("gym", "workout", "fitness", "exercise", "recipe", "diet", "cooking", "weather", "sports", "cricket")
-    if any(w in low for w in off_topic_words) and not any(k in low for k in ("broadband", "fiber", "fibre", "wifi", "signal selector")):
-        return False
-
     if _extract_pincode(text):
         return True
 
@@ -366,7 +361,8 @@ def _is_order_intent_trigger(text: str) -> bool:
     info_inquiry_phrases = (
         "what are", "what is", "tell me", "show me", "how much", "which plan",
         "recommend", "compare", "options", "details", "explain", "plans available",
-        "available plans", "list plans", "standard plans", "broadband plans", "what plans"
+        "available plans", "list plans", "standard plans", "broadband plans", "what plans",
+        "choose the right plan", "help me choose"
     )
     if any(q in low for q in info_inquiry_phrases) and not any(k in low for k in ["buy", "book", "purchase", "subscribe", "check coverage", "check serviceability", "new connection"]):
         return False

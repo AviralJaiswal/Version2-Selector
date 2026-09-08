@@ -6,27 +6,28 @@ from app.utils.trace import trace, trace_async
 
 logger = logging.getLogger(__name__)
 
-_FALLBACK_GREETINGS = {
-    "existing": {
-        "en": "Welcome back! I am your Signal Selector assistant. How can I help with your account, plan upgrades, or technical support today?",
-        "hi": "\u0906\u092a\u0915\u093e \u0938\u094d\u0935\u093e\u0917\u0924 \u0939\u0948! \u092e\u0948\u0902 \u0906\u092a\u0915\u093e Signal Selector \u0938\u0939\u093e\u092f\u0915 \u0939\u0942\u0902\u0964 \u092e\u0948\u0902 \u0906\u092a\u0915\u0947 \u0916\u093e\u0924\u0947, \u092a\u094d\u0932\u093e\u0928 \u0905\u092a\u0917\u094d\u0930\u0947\u0921, \u092f\u093e \u0924\u0915\u0928\u0940\u0915\u0940 \u0938\u0939\u093e\u092f\u0924\u093e \u092e\u0947\u0902 \u0915\u0948\u0938\u0947 \u092e\u0926\u0926 \u0915\u0930 \u0938\u0915\u0924\u093e \u0939\u0942\u0902?",
-        "te": "\u0c2e\u0c40\u0c30\u0c41 \u0c24\u0c3f\u0c30\u0c3f\u0c17\u0c3f \u0c38\u0c4d\u0c35\u0c3e\u0c17\u0c24\u0c02! \u0c28\u0c47\u0c28\u0c41 \u0c2e\u0c40 Signal Selector \u0c38\u0c39\u0c3e\u0c2f\u0c15\u0c41\u0c21\u0c3f\u0c28\u0c3f. \u0c2e\u0c40 \u0c16\u0c3e\u0c24\u0c3e, \u0c2a\u0c4d\u0c32\u0c3e\u0c28\u0c4d \u0c05\u0c2a\u0c4d\u0c17\u0c4d\u0c30\u0c47\u0c21\u0c4d, \u0c32\u0c47\u0c26\u0c3e \u0c38\u0c3e\u0c02\u0c15\u0c47\u0c24\u0c3f\u0c15 \u0c2e\u0c26\u0c4d\u0c26\u0c24\u0c41\u0c32\u0c4b \u0c07\u0c35\u0c3e\u0c33 \u0c28\u0c47\u0c28\u0c41 \u0c0e\u0c32\u0c3e \u0c38\u0c39\u0c3e\u0c2f\u0c02 \u0c1a\u0c47\u0c2f\u0c17\u0c32\u0c28\u0c41?",
-        "ta": "\u0bae\u0bc0\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd \u0bb5\u0bb0\u0bb5\u0bc7\u0bb1\u0bcd\u0b95\u0bbf\u0bb1\u0bcb\u0bae\u0bcd! \u0ba8\u0bbe\u0ba9\u0bcd \u0b89\u0b99\u0bcd\u0b95\u0bb3\u0bcd Signal Selector \u0b89\u0ba4\u0bb5\u0bbf\u0baf\u0bbe\u0bb3\u0bb0\u0bcd. \u0b89\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0b95\u0ba3\u0b95\u0bcd\u0b95\u0bc1, \u0ba4\u0bbf\u0b9f\u0bcd\u0b9f \u0bae\u0bc7\u0bae\u0bcd\u0baa\u0bbe\u0b9f\u0bc1, \u0b85\u0bb2\u0bcd\u0bb2\u0ba4\u0bc1 \u0ba4\u0bca\u0bb4\u0bbf\u0bb2\u0bcd\u0ba8\u0bc1\u0b9f\u0bcd\u0baa \u0b89\u0ba4\u0bb5\u0bbf\u0b95\u0bcd\u0b95\u0bc1 \u0ba8\u0bbe\u0ba9\u0bcd \u0b8e\u0baa\u0bcd\u0baa\u0b9f\u0bbf \u0b89\u0ba4\u0bb5 \u0bae\u0bc1\u0b9f\u0bbf\u0baf\u0bc1\u0bae\u0bcd?",
-    },
-    "general": {
-        "en": "Welcome to Signal Selector! I am your AI broadband assistant. How can I help you today? You can explore our fiber plans, ask about installation and policies, or check serviceability.",
-        "hi": "Signal Selector \u092e\u0947\u0902 \u0906\u092a\u0915\u093e \u0938\u094d\u0935\u093e\u0917\u0924 \u0939\u0948! \u092e\u0948\u0902 \u0906\u092a\u0915\u093e AI \u092c\u094d\u0930\u0949\u0921\u092c\u0948\u0902\u0921 \u0938\u0939\u093e\u092f\u0915 \u0939\u0942\u0902\u0964 \u0906\u091c \u092e\u0948\u0902 \u0906\u092a\u0915\u0940 \u0915\u094d\u092f\u093e \u092e\u0926\u0926 \u0915\u0930 \u0938\u0915\u0924\u093e \u0939\u0942\u0902?",
-        "te": "Signal Selector \u0c15\u0c3f \u0c38\u0c4d\u0c35\u0c3e\u0c17\u0c24\u0c02! \u0c28\u0c47\u0c28\u0c41 \u0c2e\u0c40 AI \u0c2c\u0c4d\u0c30\u0c3e\u0c21\u0c4d\u200c\u0c2c\u0c4d\u0c2f\u0c3e\u0c02\u0c21\u0c4d \u0c05\u0c38\u0c3f\u0c38\u0c4d\u0c1f\u0c46\u0c02\u0c1f\u0c4d\u200c\u0c28\u0c3f. \u0c08\u0c30\u0c4b\u0c1c\u0c41 \u0c28\u0c47\u0c28\u0c41 \u0c2e\u0c40\u0c15\u0c41 \u0c0e\u0c32\u0c3e \u0c38\u0c39\u0c3e\u0c2f\u0c02 \u0c1a\u0c47\u0c2f\u0c17\u0c32\u0c28\u0c41?",
-        "ta": "Signal Selector \u0b95\u0bcd\u0b95\u0bc1 \u0bb5\u0bb0\u0bb5\u0bc7\u0bb1\u0bcd\u0b95\u0bbf\u0bb1\u0bcb\u0bae\u0bcd! \u0ba8\u0bbe\u0ba9\u0bcd \u0b89\u0b99\u0bcd\u0b95\u0bb3\u0bcd AI \u0baa\u0bbf\u0bb0\u0bbe\u0b9f\u0bcd\u0baa\u0bc7\u0ba3\u0bcd\u0b9f\u0bcd \u0b89\u0ba4\u0bb5\u0bbf\u0baf\u0bbe\u0bb3\u0bb0\u0bcd. \u0b87\u0ba9\u0bcd\u0bb1\u0bc1 \u0ba8\u0bbe\u0ba9\u0bcd \u0b89\u0b99\u0bcd\u0b95\u0bb3\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0b8e\u0bb5\u0bcd\u0bb5\u0bbe\u0bb1\u0bc1 \u0b89\u0ba4\u0bb5 \u0bae\u0bc1\u0b9f\u0bbf\u0baf\u0bc1\u0bae\u0bcd?",
-    },
+_DYNAMIC_GREETINGS = {
+    "existing": [
+        "Welcome back to Signal Selector! I am your broadband assistant. How can I help with your account, speed upgrades, or technical support today?",
+        "Hello again! As your Signal Selector broadband guide, I'm here to assist with your active fiber connection, router settings, or plan upgrades.",
+        "Welcome back! How can I support your internet connection today? You can check billing, run automated line diagnostics, or explore higher speed plans.",
+        "Glad to have you back at Signal Selector! Let me know if you need assistance with your Wi-Fi router, account settings, or upgrading to Gigabit speeds.",
+    ],
+    "general": [
+        "Welcome to Signal Selector! I am your AI broadband assistant. How can I help you today? You can explore our high-speed fiber plans, check installation timelines, or inquire about Wi-Fi 6 router features.",
+        "Hello and welcome to Signal Selector! Looking for ultra-fast fiber internet? Ask me about our unlimited broadband plans (40 Mbps to 1 Gbps), bundled OTT streaming benefits, or check coverage in your area.",
+        "Hi there! Welcome to Signal Selector broadband support. I'm here to help you compare high-speed internet plans, learn about our zero-fee installation offers, or find the ideal plan for your home or workspace.",
+        "Welcome to Signal Selector! Ready to experience lightning-fast fiber broadband? Let me know what you need—whether it's plan recommendations, 4K streaming benefits, or checking service availability.",
+        "Greetings! I am Signal Selector's broadband guide. How can I assist you today with fiber optic internet plans, router specifications, or installation details?",
+    ],
 }
 
 
 @trace
 def generate_dynamic_greeting(profile: str = "general") -> str:
-    """Generate dynamic welcome greeting strictly using AI model prompt instructions."""
+    """Generate dynamic welcome greeting strictly using AI model prompt instructions with dynamic variation."""
     styles = get_prompt("welcome.styles").splitlines()
-    chosen_style = random.choice(styles)
+    chosen_style = random.choice(styles) if styles else "Greet the user warmly as Signal Selector's broadband AI assistant."
 
     if profile == "existing":
         prompt = get_prompt(
@@ -49,9 +50,8 @@ def generate_dynamic_greeting(profile: str = "general") -> str:
         logger.warning("Dynamic LLM greeting generation error: %s", exc)
 
     profile_key = "existing" if profile == "existing" else "general"
-    lang = get_current_language()
-    fallback_set = _FALLBACK_GREETINGS[profile_key]
-    return fallback_set.get(lang, fallback_set["en"])
+    greetings_pool = _DYNAMIC_GREETINGS.get(profile_key, _DYNAMIC_GREETINGS["general"])
+    return random.choice(greetings_pool)
 
 
 def get_rag_faq_topics() -> list[str]:
