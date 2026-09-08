@@ -4,7 +4,6 @@ import { CircleHelp, Sparkles, Home, Wifi, UserRound } from 'lucide-react'
 import { LandingView } from './views/LandingView'
 import { GeneralChatView } from './views/GeneralChatView'
 import { ExistingChatView } from './views/ExistingChatView'
-import { LanguageSwitcher } from './components/LanguageSwitcher'
 import { useLanguage } from './context/LanguageContext'
 
 export function App() {
@@ -34,7 +33,6 @@ export function App() {
 
         {/* Live Radar Status Indicator */}
         <div className="top-status">
-          <LanguageSwitcher />
           <div className="live-status-badge">
             <span className="radar-ping" />
             <span className="status-dot green-dot" />

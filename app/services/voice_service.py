@@ -69,34 +69,30 @@ def _get_whisper_model():
 
 
 @trace
-def transcribe_audio(audio_bytes: bytes, language: str = "en") -> dict:
-    """Transcribe audio to text using Whisper.
+def transcribe_audio(audio_bytes: bytes, language: str | None = None) -> dict:
+    """Transcribe audio to text using Whisper. Automatically detects spoken language when language is None or 'auto'.
 
     Returns {"text": str, "language": str, "duration_seconds": float}.
-    Raises VoiceServiceError on genuine failure (corrupt audio, model load
-    failure) - the caller should return a clear error to the user, since
-    there's no good silent fallback for STT the way there is for TTS.
     """
     settings = get_settings()
     if not settings.voice_enabled:
         raise VoiceServiceError("Voice mode is disabled on this server.")
 
-    whisper_lang = WHISPER_LANGUAGE_MAP.get(language)
-    if whisper_lang is None:
-        raise VoiceServiceError(f"Unsupported voice language: {language!r}")
+    whisper_lang = WHISPER_LANGUAGE_MAP.get(language) if (language and language != "auto") else None
 
     try:
         model = _get_whisper_model()
         start = time.monotonic()
         segments, info = model.transcribe(
             io.BytesIO(audio_bytes),
-            language=whisper_lang,
+            language=whisper_lang,  # None enables Whisper's native automatic language detection
             vad_filter=True,  # skip silence, improves accuracy on real mic audio
             beam_size=5,
         )
         text = " ".join(seg.text.strip() for seg in segments).strip()
+        detected_lang = getattr(info, "language", whisper_lang or "en")
         elapsed = time.monotonic() - start
-        return {"text": text, "language": whisper_lang, "duration_seconds": round(elapsed, 2)}
+        return {"text": text, "language": detected_lang, "duration_seconds": round(elapsed, 2)}
     except VoiceServiceError:
         raise
     except Exception as exc:

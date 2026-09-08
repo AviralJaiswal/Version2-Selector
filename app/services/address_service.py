@@ -81,7 +81,12 @@ def extract_street_address_llm(text: str, pincode: str | None = None) -> str | N
         if parsed and isinstance(parsed, dict):
             if parsed.get("has_street_address") and parsed.get("street_address"):
                 addr = str(parsed["street_address"]).strip()
-                if len(addr) >= 3 and addr.lower() not in {"null", "none", "discover plans", "plans", "coverage", "check coverage"}:
+                non_addresses = {
+                    "null", "none", "discover plans", "plans", "coverage", "check coverage",
+                    "home", "my home", "a home", "house", "my house", "office", "my office",
+                    "flat", "my flat", "new connection", "connection", "broadband", "fiber", "fibre"
+                }
+                if len(addr) >= 3 and addr.lower() not in non_addresses:
                     return addr
             elif parsed.get("has_street_address") is False:
                 return None
@@ -89,9 +94,14 @@ def extract_street_address_llm(text: str, pincode: str | None = None) -> str | N
         logger.warning("LLM street address extraction failed, fallback to pattern cleaner: %s", exc)
 
     fallback_addr = clean_street_address(text, pincode)
-    if fallback_addr.lower() in {"null", "none", "discover plans", "plans", "coverage", "check coverage"}:
+    non_addresses = {
+        "null", "none", "discover plans", "plans", "coverage", "check coverage",
+        "home", "my home", "a home", "house", "my house", "office", "my office",
+        "flat", "my flat", "new connection", "connection", "broadband", "fiber", "fibre"
+    }
+    if not fallback_addr or fallback_addr.lower() in non_addresses:
         return None
-    return fallback_addr or None
+    return fallback_addr
 
 
 METRO_TELECOM_MAP = [

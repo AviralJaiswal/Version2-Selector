@@ -16,8 +16,8 @@ import { useLanguage } from '../context/LanguageContext'
 export function ExistingChatView({ onBack }) {
   const mode = "existing";
   const isExisting = mode === 'existing'
-  const { language, t } = useLanguage()
-  const voice = useVoiceMode(language)
+  const { t } = useLanguage()
+  const voice = useVoiceMode()
   const [sessionId, setSessionId] = useState(() => {
     try {
       let key = isExisting ? 'qcom_session_id_existing' : 'qcom_session_id_general'
@@ -51,14 +51,12 @@ export function ExistingChatView({ onBack }) {
     }
     const mergedFields = {
       ...(isExisting ? { is_existing_customer: true } : {}),
-      language,
       ...(structuredFields || {})
     }
     try {
       const response = await request('/chat', {
         session_id: overrideSessionId || sessionId,
         message,
-        language,
         ...(quickAction ? { quick_action: quickAction } : {}),
         structured_fields: Object.keys(mergedFields).length > 0 ? mergedFields : null
       })
@@ -118,7 +116,7 @@ export function ExistingChatView({ onBack }) {
   async function fetchWelcomeGreeting(sid) {
     setBusy(true)
     try {
-      const res = await request('/api/v1/assistant/welcome', { sessionId: sid, profile: 'existing', language })
+      const res = await request('/api/v1/assistant/welcome', { sessionId: sid, profile: 'existing' })
       const welcomeMsg = res.response || res.welcome_message || res.message
       const followups = res.recommended_followups || res.recommendedFollowups || (res.data && (res.data.recommended_followups || res.data.recommendedFollowups)) || []
       if (welcomeMsg) {

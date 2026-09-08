@@ -274,8 +274,9 @@ def initialize_session(
     session = session_store.create(session_id)
     conversation_id = _conversation_id(session)
 
-    mode = "ORDER_FLOW" if profile == "existing" else "RAG"
-    workflow_state = "EXISTING_CUSTOMER" if profile == "existing" else "RAG_FAQ"
+    is_existing = profile == "existing"
+    mode = "ORDER_FLOW" if is_existing else "RAG"
+    workflow_state = "EXISTING_CUSTOMER" if is_existing else "RAG_FAQ"
 
     session.update({
         "mode": mode,
@@ -284,6 +285,7 @@ def initialize_session(
         "locale": locale,
         "source": source,
         "profile": profile,
+        "is_existing_customer": is_existing,
         "language": language,
         "address_qualified": False,
         "plans_shown": False,
@@ -291,10 +293,17 @@ def initialize_session(
 
     set_current_language(language)
     welcome = generate_dynamic_greeting(profile=profile)
-    followups = generate_contextual_followups(message="", answer=welcome, profile=profile)
+    followups = generate_contextual_followups(
+        message="",
+        answer=welcome,
+        profile=profile,
+        conversation_history=[],
+        previous_suggestions=[],
+    )
 
     session["welcome"] = welcome
     session["recommended_followups"] = followups
+    session["shown_suggestions"] = list(followups)
     session.setdefault("conversation_history", []).append({"role": "assistant", "content": welcome, "kind": "welcome"})
 
     logger.info("Session initialized: session_id=%s, conversation_id=%s", session_id, conversation_id)
@@ -344,6 +353,12 @@ def _is_escape_intent(text: str) -> bool:
 def _is_order_intent_trigger(text: str) -> bool:
     """Check if text expresses explicit intent to start an order or check serviceability."""
     low = text.lower().strip()
+
+    # 0. Off-topic queries (e.g. gym, workout, recipe, cooking) should never trigger order flow
+    off_topic_words = ("gym", "workout", "fitness", "exercise", "recipe", "diet", "cooking", "weather", "sports", "cricket")
+    if any(w in low for w in off_topic_words) and not any(k in low for k in ("broadband", "fiber", "fibre", "wifi", "signal selector")):
+        return False
+
     if _extract_pincode(text):
         return True
 
@@ -358,8 +373,8 @@ def _is_order_intent_trigger(text: str) -> bool:
 
     # 2. Direct purchase action words or serviceability check keywords
     order_action_keywords = (
-        "buy", "book", "purchase", "subscribe", "sign up", "get a new", "need a new",
-        "i want a new", "want to buy", "want to book", "want to get", "check coverage",
+        "buy", "book", "purchase", "subscribe", "sign up", "get a new connection", "need a new connection",
+        "i want a new connection", "want to buy", "want to book", "want to get a connection", "check coverage",
         "check serviceability", "my pincode", "my address", "pincode is", "pin code is", "located at"
     )
     if any(w in low for w in order_action_keywords):
@@ -368,7 +383,8 @@ def _is_order_intent_trigger(text: str) -> bool:
     # 3. Connection order phrases
     order_phrases = (
         "new connection", "new fiber", "new fibre", "order plan", "order fiber",
-        "get fiber", "get broadband", "get a connection", "get new connection"
+        "get fiber", "get broadband", "get a connection", "get new connection", "book a connection",
+        "i want a new fiber", "i want to book", "i want to get a new"
     )
     return any(p in low for p in order_phrases)
 
@@ -408,12 +424,23 @@ def _extract_customer_info(text: str) -> dict:
     phone_match = re.search(r"(?<!\d)(?:\+91[- ]?)?([6-9]\d{9})(?!\d)", text)
     name_match = re.search(r"(?:name\s*[:\-]|name is|my name is|i am|i'm|^)\s*([A-Za-z][A-Za-z ]{1,50}?)(?=\s*[,;]|email|\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b|$)", text, re.I)
 
+    non_names = {
+        "hi", "hello", "hey", "yes", "no", "order", "plan", "select", "speed", "price",
+        "refund", "policy", "installation", "timeline", "router", "wifi", "wi-fi", "ethernet",
+        "broadband", "fiber", "fibre", "connection", "signal", "selector", "help", "details",
+        "what", "how", "when", "where", "why", "which", "tell", "show", "give", "book", "buy"
+    }
+
     name = name_match.group(1).strip(" .,!") if name_match else None
-    if name and name.lower() in {"hi", "hello", "hey", "yes", "no", "order", "plan", "select"}:
-        name = None
+    if name and any(w.lower() in non_names for w in name.lower().split()):
+        if not re.search(r"(?:name\s*[:\-]|name is|my name is|i am|i'm)", text, re.I):
+            name = None
+        else:
+            cleaned_words = [w for w in name.split() if w.lower() not in non_names]
+            name = " ".join(cleaned_words) if cleaned_words else None
 
     return {
-        "name": name,
+        "name": name if (name and len(name) >= 2) else None,
         "phone": phone_match.group(1) if phone_match else None,
         "email": email_match.group(0) if email_match else None,
     }
@@ -462,7 +489,16 @@ def handle_message(
     )
 
     if not in_order_flow:
-        followups = generate_contextual_followups(message=message, answer=ans, profile=profile)
+        shown = session.get("shown_suggestions", [])
+        followups = generate_contextual_followups(
+            message=message,
+            answer=ans,
+            profile=profile,
+            conversation_history=session.get("conversation_history"),
+            previous_suggestions=shown,
+        )
+        updated_shown = list(shown) + [f for f in followups if f not in shown]
+        session["shown_suggestions"] = updated_shown[-30:]
     else:
         followups = []
 
@@ -547,18 +583,51 @@ def _handle_existing_customer_message(
         current_plan = options["current"]
         session["current_plan"] = current_plan
 
+        order_info_lines = []
+        latest_order = customer.get("latest_order")
+        if latest_order:
+            order_id = latest_order.get("order_id")
+            order_details = latest_order.get("details") or {}
+            appt = order_details.get("appointment") or {}
+            addr = order_details.get("service_address") or order_details.get("qualified_address") or {}
+            addr_str = addr.get("formatted_address") or addr.get("street_address") or customer.get("existing_pincode")
+            appt_str = f"{appt.get('date', 'Upcoming')} ({appt.get('time_window', 'Standard Slot')})" if appt else "Active"
+            order_info_lines.append(f"\n• **Latest Order ID:** {order_id}")
+            if addr_str:
+                order_info_lines.append(f"• **Installation Address:** {addr_str}")
+            if appt_str:
+                order_info_lines.append(f"• **Installation Slot:** {appt_str}")
+
+        order_info_text = "\n".join(order_info_lines)
+
         if not current_plan:
+            greeting = f"Welcome back, {customer['name']}! I found your account registered with {customer['phone']}."
+            if order_info_text:
+                greeting += f"\n\n**Account & Order Summary:**{order_info_text}"
+            greeting += "\n\nWould you like to browse our high-speed fiber plans to get started?"
             return _respond(
-                f"Welcome back, {customer['name']}! I found your account, but there's no active plan on file. "
-                "Would you like to browse our plans to get started?",
+                greeting,
                 "NO_ACTIVE_PLAN",
                 catalog_plans=options["upgrades"],
             )
 
+        greeting = (
+            f"Welcome back, **{customer['name']}**!\n\n"
+            f"**Your Account Summary:**\n"
+            f"• **Registered Phone:** {customer['phone']}\n"
+            f"• **Email:** {customer['email'] or 'Not provided'}\n"
+            f"• **Active Plan:** {current_plan['name']} ({current_plan['speed_mbps']} Mbps) at ₹{current_plan['price_inr']}/month"
+        )
+        if order_info_text:
+            greeting += order_info_text
+
+        greeting += (
+            "\n\nWould you like to **upgrade** for more speed, **downgrade** to save, "
+            "check order status, update account details, or ask any service questions?"
+        )
+
         return _respond(
-            f"Welcome back, {customer['name']}! You're currently on **{current_plan['name']}** "
-            f"({current_plan['speed_mbps']} Mbps) at \u20b9{current_plan['price_inr']}/month. "
-            "Would you like to upgrade for more speed, downgrade to save, or is there something else I can help with?",
+            greeting,
             "PLAN_OVERVIEW",
             current_plan=current_plan,
             upgrade_options=options["upgrades"],
@@ -593,7 +662,7 @@ def _handle_existing_customer_message(
             session["plan_change_confirmed"] = True
             return _respond(
                 f"Done! You're now on **{pending_target['name']}** ({pending_target['speed_mbps']} Mbps) "
-                f"at \u20b9{pending_target['price_inr']}/month. The change will reflect on your next billing cycle.",
+                f"at \u20b9{pending_target['price_inr']}/month. The change has been committed to your account and will reflect on your billing cycle.",
                 "PLAN_CHANGE_CONFIRMED",
                 current_plan=pending_target,
             )
@@ -607,7 +676,52 @@ def _handle_existing_customer_message(
                 proposed_plan=pending_target,
             )
 
-    # ---- Step 3: general intent detection while verified ----
+    # ---- Step 3: account inquiry and modification intents ----
+    low_msg = message.lower()
+    
+    # Check if user asks for order or appointment details
+    if any(w in low_msg for w in ("my order", "order details", "installation", "appointment", "order status", "when will", "technician")):
+        latest_order = customer.get("latest_order")
+        if latest_order:
+            order_details = latest_order.get("details") or {}
+            appt = order_details.get("appointment") or {}
+            addr = order_details.get("service_address") or order_details.get("qualified_address") or {}
+            ans = (
+                f"📋 **Order & Installation Details:**\n\n"
+                f"• **Order ID:** {latest_order.get('order_id')}\n"
+                f"• **Plan:** {current_plan['name'] if current_plan else latest_order.get('plan_id')} (₹{latest_order.get('amount_inr', 799)}/month)\n"
+                f"• **Installation Address:** {addr.get('formatted_address') or addr.get('street_address') or customer.get('existing_pincode')}\n"
+                f"• **Scheduled Date:** {appt.get('date', 'Tomorrow')}\n"
+                f"• **Time Slot:** {appt.get('time_window', 'Morning')}\n"
+                f"• **Payment Status:** {latest_order.get('payment_status', 'Completed').capitalize()}\n\n"
+                "Our field engineer will call you before arrival."
+            )
+            return _respond(ans, "ORDER_DETAILS", latest_order=latest_order)
+
+    # Check if user asks for account details
+    if any(w in low_msg for w in ("my details", "account details", "my profile", "my account", "my info")):
+        ans = (
+            f"👤 **Your Account Profile:**\n\n"
+            f"• **Name:** {customer.get('name')}\n"
+            f"• **Phone:** {customer.get('phone')}\n"
+            f"• **Email:** {customer.get('email') or 'Not provided'}\n"
+            f"• **PIN Code:** {customer.get('existing_pincode') or 'On file'}\n"
+            f"• **Active Plan:** {current_plan['name'] if current_plan else 'None'} ({current_plan['speed_mbps'] if current_plan else 0} Mbps at ₹{current_plan['price_inr'] if current_plan else 0}/month)\n"
+            f"• **Status:** {customer.get('subscription_status', 'ACTIVE')}"
+        )
+        return _respond(ans, "ACCOUNT_DETAILS")
+
+    # Check if user asks to update email or name
+    new_email_match = re.search(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", message)
+    if ("update email" in low_msg or "change email" in low_msg) and new_email_match:
+        from app.services.customer_service import update_customer_details
+        new_email = new_email_match.group(0)
+        updated = update_customer_details(db, customer.get("customer_id"), email=new_email)
+        if updated:
+            session["customer"] = updated
+            return _respond(f"✅ Your email address has been updated to **{new_email}** in your account profile.", "PROFILE_UPDATED")
+
+    # ---- Step 4: general plan change intent detection while verified ----
     intent = _plan_change_intent(message)
     if intent in ("UPGRADE", "DOWNGRADE"):
         options = get_upgrade_downgrade_options(db, current_plan.get("plan_id") if current_plan else None)
@@ -651,6 +765,13 @@ def _handle_message_internal(
     msg_strip = message.strip()
     msg_low = msg_strip.lower()
 
+    # Extract customer info early if present
+    cust_info = _extract_customer_info(msg_strip)
+    if cust_info.get("name"):
+        session["customer_name"] = cust_info["name"]
+        if "customer" in session and isinstance(session["customer"], dict):
+            session["customer"]["name"] = cust_info["name"]
+
     # Apply structured field overrides if present
     if structured_fields:
         session.update({k: v for k, v in structured_fields.items() if v is not None})
@@ -659,7 +780,7 @@ def _handle_message_internal(
     # Previously is_existing_customer was accepted but never actually branched
     # anything - this is what makes "Existing Customer" mode real: phone lookup,
     # current-plan resolution, and upgrade/downgrade as its own flow.
-    if session.get("is_existing_customer"):
+    if session.get("is_existing_customer") or session.get("profile") == "existing":
         return _handle_existing_customer_message(
             session_id=session_id,
             message=msg_strip,
@@ -709,7 +830,11 @@ def _handle_message_internal(
             logger.warning("RAG retrieval failed: %s", exc)
             retrieved_chunks = []
         try:
-            answer = generate_grounded_faq_answer(message, retrieved_chunks)
+            answer = generate_grounded_faq_answer(
+                message,
+                retrieved_chunks,
+                conversation_history=session.get("conversation_history"),
+            )
         except Exception as exc:
             logger.warning("RAG synthesis failed: %s", exc)
             answer = "I can help with broadband plans, routers, installation, and coverage. Please ask a question, or share a complete street address with PIN code when you want to check serviceability."
@@ -1138,6 +1263,8 @@ def _handle_message_internal(
 
     # Sub-step 4: Customer Details Capture
     customer = session.get("customer") or {}
+    if session.get("customer_name") and not customer.get("name"):
+        customer["name"] = session["customer_name"]
     extracted = _extract_customer_info(message)
     for k, v in extracted.items():
         if v and not customer.get(k):

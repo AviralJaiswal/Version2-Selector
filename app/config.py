@@ -22,7 +22,7 @@ class Settings(BaseSettings):
 
     # Voice mode
     voice_enabled: bool = True
-    whisper_model_size: str = "medium"  # tiny/base/small/medium/large-v3 - bump if you get a GPU
+    whisper_model_size: str = "base"  # tiny/base/small/medium/large-v3 - fast and accurate on CPU
     whisper_device: str = "cpu"
     whisper_compute_type: str = "int8"  # int8 is fastest on CPU with minimal accuracy loss
     indic_tts_enabled: bool = True

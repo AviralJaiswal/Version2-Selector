@@ -16,12 +16,12 @@ router = APIRouter(prefix="/api/v1/voice", tags=["Voice API"])
 class TranscribeRequest(BaseModel):
     # Base64-encoded audio bytes (webm/wav/ogg from the browser's MediaRecorder).
     audio_base64: str = Field(..., min_length=1)
-    language: str = "en"
+    language: str | None = None
 
 
 class SynthesizeRequest(BaseModel):
     text: str = Field(..., min_length=1, max_length=2000)
-    language: str = "en"
+    language: str | None = None
 
 
 @router.post("/transcribe")

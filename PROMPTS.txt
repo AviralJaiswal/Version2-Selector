@@ -26,14 +26,14 @@ Context:
 session_mode: {{session_mode}}
 workflow_state: {{workflow_state}}
 customer_message: {{message}}
-- If customer_message is empty, ambiguous, or only asks for information, choose KNOWLEDGE.
+- If customer_message is empty, ambiguous, a greeting, introducing user's name, general conversation, or asking about general/unrelated topics (e.g. gym workout plans, recipes, fitness, weather), choose KNOWLEDGE.
 - If session_mode or workflow_state is missing, classify from customer_message alone.
 
 Requirements:
 - Return exactly one JSON object with one key named "route".
 - route must be exactly one of: TRANSACTION, KNOWLEDGE.
-- Choose TRANSACTION for explicit order intent, coverage/serviceability checks, new connection requests, valid 6-digit PIN codes, full street addresses, plan purchase/checkout selection, customer contact details, or appointment slots.
-- Choose KNOWLEDGE for plan comparisons, recommendations before purchase, prices, speeds, OTT benefits, routers, installation fees, policies, troubleshooting, or general broadband questions.
+- Choose TRANSACTION for explicit order booking intent, buying/purchasing plans, checking coverage/serviceability, new connection requests, 6-digit PIN codes, full street addresses, or appointment slots.
+- Choose KNOWLEDGE for greetings ("Hi", "Hello"), customer introducing their name ("My name is...", "I am...", single name), questions about what Signal Selector is or does, plan comparisons, recommendations before purchase, prices, speeds, OTT benefits, routers, installation fees, refund policies, installation timelines, troubleshooting, general conversation, or unrelated questions (e.g. gym workout plans, general chit-chat).
 - If a message contains both an FAQ and an explicit order action, choose TRANSACTION.
 - Do not include markdown, code fences, explanations, or extra keys.
 - Maximum 30 characters.
@@ -274,37 +274,43 @@ Requirements:
 END_PROMPT welcome.existing
 
 BEGIN_PROMPT welcome.general
-Generate a concise customer-facing welcome greeting for a new Signal Selector broadband visitor.
+Generate a concise, welcoming, customer-facing greeting for a visitor to the Signal Selector broadband assistant.
 
 Context:
 chosen_style: {{chosen_style}}
 profile: {{profile}}
-- If profile is missing or not existing, treat the visitor as a general new-service shopper.
 
 Requirements:
 - Follow chosen_style naturally.
-- Offer help with plans, router specs, installation timelines, or serviceability.
-- If mentioning serviceability, ask for a complete street address with building/flat number, street name, area, and PIN code.
-- Do NOT ask for just a 6-digit pincode; ask for their complete street address.
-- Mention that exact coverage and local plans are checked through our mapping provider.
+- Welcome the visitor warmly to Signal Selector.
+- Offer to help explore high-speed fiber broadband plans, answer questions about policies, installation timelines, or routers, or check serviceability.
+- If mentioning serviceability, state that a complete street address with PIN code is needed. Do NOT ask for just a 6-digit pincode; ask for their complete street address.
+- Keep it friendly, conversational, and open-ended without forcing booking or address workflows prematurely.
 - Do not mention payment, booking, or appointments.
 - Maximum 35 words.
 - No markdown.
 END_PROMPT welcome.general
 
 BEGIN_PROMPT welcome.followups
-Generate 3 concise, highly relevant recommended user follow-up response options based on the conversation context.
+Generate 2 to 3 concise, relevant, and fresh suggested follow-up responses (questions or actions) for the user.
 
 Context:
 profile: {{profile}}
 user_previous_message: {{message}}
 assistant_last_response: {{answer}}
+available_rag_faq_topics:
+{{rag_topics}}
+valid_application_actions:
+{{valid_actions}}
+previously_shown_suggestions: {{previous_suggestions}}
 
 Requirements:
-- Return a JSON object with a single key "suggestions" containing an array of 3 short text strings (3 to 7 words each).
-- The suggestions MUST mix natural first-person user action statements (such as "I want a new connection", "I want to book a connection", "I need a high-speed gaming plan", "I want to upgrade my plan") alongside relevant user queries.
-- Do NOT make them all questions. Include clear intent statements like "I want to get a new fiber connection".
-- All suggestions must be generated dynamically by the LLM based on the conversation context without static keyword templates.
+- Return a JSON object with a single key "suggestions" containing an array of 2 to 3 short text strings (3 to 8 words each).
+- GROUNDING: Suggested questions MUST be strictly grounded in what is covered under available_rag_faq_topics so the RAG assistant can accurately answer them.
+- DO NOT generate random, speculative, or complex questions about information not present in available_rag_faq_topics.
+- ACTION OPTIONS: Suggestions can be either questions grounded in RAG topics OR direct user actions from valid_application_actions (such as "I want a new connection", "I want to order a connection", "Check plan availability for my area", or "Upgrade my fiber plan").
+- DYNAMIC RELEVANCE: Dynamically select a natural mix of follow-up questions and/or user actions that best fit the ongoing conversation context and the assistant's latest response.
+- CRITICAL: Do NOT repeat, duplicate, or rephrase any suggestions from previously_shown_suggestions: [{{previous_suggestions}}].
 - Return valid JSON only with key "suggestions".
 END_PROMPT welcome.followups
 
@@ -319,12 +325,12 @@ Context:
 customer_message: {{text}}
 pincode: {{pincode}}
 - If pincode is missing, still classify whether a street address is present.
-- If customer_message is empty, intent-only, or only contains a PIN code, return has_street_address as false.
+- If customer_message is empty, intent-only (e.g. "I want to get a new connection for my home", "I need broadband for my flat"), a greeting, introducing customer name (e.g. "Rahul", "My name is John"), generic words ("home", "my home", "office"), or only contains a PIN code, return has_street_address as false.
 
 Requirements:
 - Return exactly one JSON object with keys "has_street_address" and "street_address".
-- Set has_street_address to true only when the message contains a house/flat/plot number, apartment/building name, street/road/lane, colony, nagar, sector, block, or comparable premise detail.
-- Set has_street_address to false for general questions, plan discovery requests, serviceability requests, city-only input, or pincode-only input.
+- Set has_street_address to true only when the message contains a specific premise detail such as house/flat/plot number, apartment/building name, street/road/lane, colony, nagar, sector, block, or specific area name.
+- Set has_street_address to false for greetings, names, general questions, plan discovery requests, serviceability requests, city-only input, pincode-only input, or generic terms like 'home'/'my home'/'office'.
 - If true, street_address must contain only the extracted street/premise portion and must exclude the PIN code.
 - If false, street_address must be null.
 - If the message contains conflicting or ambiguous location text, return false instead of guessing.
@@ -337,7 +343,7 @@ You return strict JSON only.
 END_PROMPT address.street_extraction.system
 
 BEGIN_PROMPT rag.grounded_faq_answer
-Generate a clear, friendly, customer-facing answer strictly grounded on the supplied knowledge context.
+Generate a natural, humanized, and helpful customer-facing response as Signal Selector's broadband assistant.
 
 Knowledge Context:
 {{context}}
@@ -346,10 +352,16 @@ Customer Query:
 {{user_query}}
 
 Instructions:
-- Answer the customer's query directly and accurately based on the Knowledge Context above.
-- If the query is about specific policy or info (e.g. Refund Policy, Installation Timelines, Hardware, SLA, KYC), summarize the exact details from the Knowledge Context.
-- If the query explicitly asks to see available plans or pricing, list the main Fiber Broadband plans (speeds & prices) from the context.
-- Keep the response professional, clear, and concise (under 120 words).
+- Analyze the customer's actual query and intent carefully in context:
+  - TELECOM & BROADBAND: If the customer asks about Signal Selector broadband plans, speeds, pricing, Wi-Fi 6 router hardware, installation charges, installation timeline, refund policy, SLA, troubleshooting, or bundled OTT entertainment perks:
+    - Ground your answer in the provided Knowledge Context and answer their specific question conversationally.
+  - OUT OF SCOPE / UNRELATED / AMBIGUOUS: If the query is completely outside Signal Selector's scope (e.g. "I want a gym plan", workout routines, recipes, weather, homework, general health/fitness) OR is an ambiguous query that does not indicate broadband intent (e.g. "I want a cricket plan", "mobile recharge plan", "diet plan") without specifying broadband connectivity or streaming:
+    - Do NOT interpret it as a broadband plan request or recommend broadband plans.
+    - Respond naturally and politely that as Signal Selector's broadband assistant, you specialize in home and business fiber broadband services, and cannot assist with that request.
+  - GREETING / NAME: If the customer is greeting or introducing their name, greet them warmly by name, briefly introduce Signal Selector, and ask how you can help with fiber broadband.
+  - ORDER INTENT: If the customer expresses clear intent to book, order, or check serviceability for a new connection, invite them to share their complete street address with PIN code.
+  - DO NOT append unsolicited order-flow prompts ("If you would like to check availability for your address...") unless the customer actually asked about ordering or checking coverage.
+- Keep the response concise, accurate, professional, and conversational (under 100 words).
 END_PROMPT rag.grounded_faq_answer
 
 BEGIN_PROMPT plan_service.gemini_reasoning

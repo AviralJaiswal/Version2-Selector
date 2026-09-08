@@ -18,7 +18,7 @@ const SPEECH_SYNTH_LOCALE = {
  * Both the STT and TTS backends are genuinely free (no API key, no
  * per-request cost) - see app/services/voice_service.py.
  */
-export function useVoiceMode(language) {
+export function useVoiceMode() {
   const [isRecording, setIsRecording] = useState(false)
   const [isTranscribing, setIsTranscribing] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
@@ -26,59 +26,141 @@ export function useVoiceMode(language) {
   const mediaRecorderRef = useRef(null)
   const chunksRef = useRef([])
   const audioElRef = useRef(null)
+  const recognitionRef = useRef(null)
+  const speechResultRef = useRef('')
 
   const startRecording = useCallback(async () => {
     setVoiceError('')
+    speechResultRef.current = ''
+
+    // 1. Start Web Speech API SpeechRecognition if supported (instantaneous client-side recognition)
+    const SpeechRecognition = typeof window !== 'undefined' ? (window.SpeechRecognition || window.webkitSpeechRecognition) : null
+    if (SpeechRecognition) {
+      try {
+        const recognition = new SpeechRecognition()
+        recognition.continuous = true
+        recognition.interimResults = true
+        recognition.lang = '' // browser auto-detection
+        recognition.onresult = (event) => {
+          let fullTranscript = ''
+          for (let i = 0; i < event.results.length; i++) {
+            fullTranscript += event.results[i][0].transcript + ' '
+          }
+          speechResultRef.current = fullTranscript.trim()
+        }
+        recognition.onerror = (e) => {
+          console.warn('SpeechRecognition info:', e.error)
+        }
+        recognition.start()
+        recognitionRef.current = recognition
+      } catch (err) {
+        console.warn('Native speech recognition init note:', err)
+      }
+    }
+
+    // 2. Also start MediaRecorder for audio capture / server fallback
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      const recorder = new MediaRecorder(stream)
-      chunksRef.current = []
-      recorder.ondataavailable = (e) => { if (e.data.size > 0) chunksRef.current.push(e.data) }
-      recorder.start()
-      mediaRecorderRef.current = recorder
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        const recorder = new MediaRecorder(stream)
+        chunksRef.current = []
+        recorder.ondataavailable = (e) => { if (e.data.size > 0) chunksRef.current.push(e.data) }
+        recorder.start()
+        mediaRecorderRef.current = recorder
+      }
       setIsRecording(true)
     } catch (err) {
-      setVoiceError('Microphone access denied or unavailable.')
+      if (!recognitionRef.current) {
+        setVoiceError('Microphone access denied or unavailable.')
+      } else {
+        setIsRecording(true)
+      }
     }
   }, [])
 
-  // Stops recording and returns the transcribed text (or '' on failure).
+  // Stops recording and returns the transcribed text
   const stopRecordingAndTranscribe = useCallback(() => {
     return new Promise((resolve) => {
+      // Stop native recognition if active
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop()
+        } catch (e) {}
+        recognitionRef.current = null
+      }
+
       const recorder = mediaRecorderRef.current
-      if (!recorder) { resolve(''); return }
+      if (!recorder) {
+        setIsRecording(false)
+        const text = speechResultRef.current.trim()
+        if (text) {
+          resolve(text)
+        } else {
+          setVoiceError('No speech detected. Please try speaking again.')
+          resolve('')
+        }
+        return
+      }
 
       recorder.onstop = async () => {
         setIsRecording(false)
+
+        // 1. If native speech recognition captured speech, resolve immediately!
+        if (speechResultRef.current && speechResultRef.current.trim()) {
+          resolve(speechResultRef.current.trim())
+          return
+        }
+
+        // 2. Otherwise send audio bytes to backend Whisper
         setIsTranscribing(true)
         try {
           const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
+          if (blob.size < 100) {
+            resolve('')
+            return
+          }
           const audioBase64 = await blobToBase64(blob)
           const res = await fetch(`${API}/api/v1/voice/transcribe`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ audio_base64: audioBase64, language }),
+            body: JSON.stringify({ audio_base64: audioBase64, language: null }),
           })
-          if (!res.ok) {
-            setVoiceError('Could not transcribe audio. Please try typing instead.')
-            resolve('')
-            return
+          if (res.ok) {
+            const body = await res.json()
+            const text = body.data?.text || body.text || ''
+            if (text) {
+              resolve(text)
+              return
+            }
           }
-          const body = await res.json()
-          resolve(body.data?.text || body.text || '')
+          if (speechResultRef.current && speechResultRef.current.trim()) {
+            resolve(speechResultRef.current.trim())
+          } else {
+            setVoiceError('Could not transcribe audio. Please try typing or speak again.')
+            resolve('')
+          }
         } catch (err) {
-          setVoiceError('Transcription failed. Please try typing instead.')
-          resolve('')
+          if (speechResultRef.current && speechResultRef.current.trim()) {
+            resolve(speechResultRef.current.trim())
+          } else {
+            setVoiceError('Transcription failed. Please try typing instead.')
+            resolve('')
+          }
         } finally {
           setIsTranscribing(false)
         }
       }
+
       recorder.stop()
       recorder.stream.getTracks().forEach((t) => t.stop())
     })
-  }, [language])
+  }, [])
 
   const cancelRecording = useCallback(() => {
+    if (recognitionRef.current) {
+      try { recognitionRef.current.stop() } catch (e) {}
+      recognitionRef.current = null
+    }
     const recorder = mediaRecorderRef.current
     if (recorder && recorder.state !== 'inactive') {
       recorder.onstop = null
@@ -88,9 +170,7 @@ export function useVoiceMode(language) {
     setIsRecording(false)
   }, [])
 
-  // Speaks `text` aloud: tries the self-hosted Indic Parler TTS first,
-  // falls back to the browser's built-in SpeechSynthesis if that model
-  // is unavailable or too slow (server signals this via used_fallback).
+  // Speaks text aloud with script/language auto-detection
   const speak = useCallback(async (text) => {
     if (!text || !text.trim()) return
     setIsSpeaking(true)
@@ -98,13 +178,13 @@ export function useVoiceMode(language) {
       const res = await fetch(`${API}/api/v1/voice/synthesize`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, language }),
+        body: JSON.stringify({ text, language: null }),
       })
       const body = await res.json()
       const data = body.data || body
 
       if (data.used_fallback || !data.audio_base64) {
-        speakWithBrowserTts(text, language, () => setIsSpeaking(false))
+        speakWithBrowserTts(text, () => setIsSpeaking(false))
         return
       }
 
@@ -112,15 +192,13 @@ export function useVoiceMode(language) {
       audioElRef.current = audio
       audio.onended = () => setIsSpeaking(false)
       audio.onerror = () => {
-        // Even a playback failure falls back to browser TTS rather than
-        // going silent.
-        speakWithBrowserTts(text, language, () => setIsSpeaking(false))
+        speakWithBrowserTts(text, () => setIsSpeaking(false))
       }
       await audio.play()
     } catch (err) {
-      speakWithBrowserTts(text, language, () => setIsSpeaking(false))
+      speakWithBrowserTts(text, () => setIsSpeaking(false))
     }
-  }, [language])
+  }, [])
 
   const stopSpeaking = useCallback(() => {
     if (audioElRef.current) {
@@ -147,10 +225,31 @@ export function useVoiceMode(language) {
   }
 }
 
-function speakWithBrowserTts(text, language, onDone) {
+function detectScriptLocale(text) {
+  if (!text) return 'en-IN'
+  if (/[\u0900-\u097F]/.test(text)) return 'hi-IN'  // Hindi / Devanagari
+  if (/[\u0C00-\u0C7F]/.test(text)) return 'te-IN'  // Telugu
+  if (/[\u0B80-\u0BFF]/.test(text)) return 'ta-IN'  // Tamil
+  if (/[\u0C80-\u0CFF]/.test(text)) return 'kn-IN'  // Kannada
+  if (/[\u0D00-\u0D7F]/.test(text)) return 'ml-IN'  // Malayalam
+  if (/[\u0980-\u09FF]/.test(text)) return 'bn-IN'  // Bengali
+  if (/[\u0A80-\u0AFF]/.test(text)) return 'gu-IN'  // Gujarati
+  return 'en-IN'
+}
+
+function speakWithBrowserTts(text, onDone) {
   if (typeof window === 'undefined' || !window.speechSynthesis) { onDone(); return }
-  const utterance = new SpeechSynthesisUtterance(text)
-  utterance.lang = SPEECH_SYNTH_LOCALE[language] || 'en-IN'
+  const cleanText = text.replace(/[*#_`]/g, '').trim()
+  const utterance = new SpeechSynthesisUtterance(cleanText)
+  const locale = detectScriptLocale(cleanText)
+  utterance.lang = locale
+
+  const voices = window.speechSynthesis.getVoices()
+  const matchedVoice = voices.find((v) => v.lang === locale || v.lang.startsWith(locale.split('-')[0]))
+  if (matchedVoice) {
+    utterance.voice = matchedVoice
+  }
+
   utterance.onend = onDone
   utterance.onerror = onDone
   window.speechSynthesis.speak(utterance)

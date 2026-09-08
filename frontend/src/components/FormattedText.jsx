@@ -2,7 +2,15 @@ import React from 'react'
 
 export function FormattedText({ content }) {
   if (!content) return null
-  const lines = content.split('\n')
+
+  // Defense-in-depth sanitization against thinking tags or reasoning prefixes
+  let sanitized = content
+    .replace(/<(?:think|thought|reasoning|system)>[\s\S]*?<\/(?:think|thought|reasoning|system)>/gi, '')
+    .replace(/^\s*(?:Here(?:'s| is) a thinking process|Thinking Process|Internal Reasoning):[\s\S]*?(?:###\s*(?:Final Response|Final Answer|Response|Output)|(?:\*\*|__)(?:Final Response|Final Answer|Response|Output)(?:\*\*|__)|(?:Final Response|Final Answer|Response|Output):\s*)/i, '')
+    .trim()
+
+  if (!sanitized) return null
+  const lines = sanitized.split('\n')
 
   return (
     <div className="formatted-chat-content" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>

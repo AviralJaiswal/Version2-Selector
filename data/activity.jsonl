@@ -201,3 +201,4 @@
 {"timestamp": "2026-08-26T04:32:13.343481Z", "event_type": "pincode_check", "session_id": "d342d5cb29594a1080322ea8c79dd2b9", "pincode": "110001", "street_address": null, "serviceable": true, "circle": "Delhi NCR"}
 {"timestamp": "2026-08-26T04:33:15.808503Z", "event_type": "session_start", "session_id": "82c20c416c1648b192b88dbccbe4916f", "channel": "api"}
 {"timestamp": "2026-08-26T04:33:17.494628Z", "event_type": "pincode_check", "session_id": "82c20c416c1648b192b88dbccbe4916f", "pincode": "110001", "street_address": null, "serviceable": true, "circle": "Delhi NCR"}
+{"timestamp": "2026-09-07T20:16:51.662448Z", "event_type": "pincode_check", "session_id": "test-session", "pincode": "110001", "street_address": null, "serviceable": true, "circle": "Delhi NCR"}

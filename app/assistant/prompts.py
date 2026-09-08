@@ -63,14 +63,6 @@ def reload_prompts() -> None:
     _load_prompts.cache_clear()
 
 
-LANGUAGE_NAMES = {
-    "en": "English",
-    "hi": "Hindi",
-    "te": "Telugu",
-    "ta": "Tamil",
-}
-
-
 def get_prompt(key: str, *, language: str | None = None, **kwargs: object) -> str:
     """Return the prompt template for `key`, with {{placeholder}} tokens filled from kwargs.
 
@@ -80,14 +72,8 @@ def get_prompt(key: str, *, language: str | None = None, **kwargs: object) -> st
     breaking rendering. Curly braces belong to any template author writing
     PROMPTS.txt; only their {{double-brace}} tokens are treated as placeholders.
 
-    When `language` is omitted, the current request's language (set via
-    set_current_language()) is used automatically. Pass it explicitly only to
-    override that for a specific call. When the resolved language is anything
-    other than "en", a language instruction is appended to the rendered prompt
-    telling the model to answer in that language while keeping proper nouns
-    (plan names, "Signal Selector", plan IDs) unchanged. This keeps PROMPTS.txt
-    as a single English source of truth instead of duplicating every entry
-    per language.
+    Language detection and response mirroring are LLM-driven: the prompt instructs
+    the model to automatically understand and reply in the customer's language.
 
     Raises PromptError if the key doesn't exist, so a missing/renamed key fails
     loudly at call time instead of silently sending an empty prompt to the LLM.
@@ -106,12 +92,12 @@ def get_prompt(key: str, *, language: str | None = None, **kwargs: object) -> st
 
     rendered = re.sub(r"\{\{(\w+)\}\}", _substitute, template) if kwargs else template
 
-    resolved_language = language if language is not None else get_current_language()
-    lang_name = LANGUAGE_NAMES.get(resolved_language, None)
-    if lang_name and resolved_language != "en":
+    # For customer-facing generation prompts (not internal JSON classifiers), add dynamic LLM language and output instruction
+    if not key.endswith(".system_json") and not key.endswith(".system_fallback") and not key.endswith(".system") and "classify" not in key and "extraction" not in key:
         rendered += (
-            f"\n\nIMPORTANT: Write your entire response in {lang_name}. "
-            "Keep plan names, brand names ('Signal Selector'), plan IDs, and numeric "
-            "values (prices, speeds, PIN codes) exactly as given - do not translate those."
+            "\n\n[Directive]: Provide ONLY the final customer-facing response. Do NOT output internal thinking process, reasoning, planning, analysis, or drafting notes. "
+            "Detect the language of the customer's input. Always write your response in the EXACT same language (e.g. English, Hindi, Telugu, Tamil, Kannada, Malayalam, Marathi, Bengali, etc.). "
+            "Never translate or modify plan names, brand names ('Signal Selector'), plan IDs, URLs, or numeric values (prices, speeds, PIN codes)."
         )
+
     return rendered
