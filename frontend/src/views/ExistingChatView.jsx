@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowLeft, Check, CheckCircle2, Send, Sparkles, UserRound, Wifi, MapPin, Zap, Bot, ShieldCheck, Clock } from 'lucide-react'
+import { ArrowLeft, Check, CheckCircle2, Send, Sparkles, UserRound, Wifi, MapPin, Zap, Bot, ShieldCheck, Clock, Volume2, Play, Pause } from 'lucide-react'
 import { request, dateKey, loadRazorpay } from '../utils/api'
 import { validateCustomerEmail } from '../utils/validation'
 import { FormattedText } from '../components/FormattedText'
@@ -44,6 +44,7 @@ export function ExistingChatView({ onBack }) {
 
   async function send(message = '', quickAction = null, structuredFields = null, overrideSessionId = null, viaVoice = false) {
     if (busy && !overrideSessionId) return
+    voice.stopSpeaking()
     setBusy(true)
     setError('')
     if (message && !message.startsWith('[')) {
@@ -103,7 +104,7 @@ export function ExistingChatView({ onBack }) {
         setState(response.updated_state)
       }
       if (viaVoice && response.answer) {
-        voice.speak(response.answer)
+        voice.speak(response.answer, 'latest')
       }
     } catch (err) {
       setError(err.message)
@@ -133,6 +134,7 @@ export function ExistingChatView({ onBack }) {
   }
 
   const resetSession = () => {
+    voice.stopSpeaking()
     try {
       let key = isExisting ? 'qcom_session_id_existing' : 'qcom_session_id_general'
       sessionStorage.removeItem(key)
@@ -390,10 +392,42 @@ export function ExistingChatView({ onBack }) {
               )
             }
 
+            const isLatestAssistant = item.role === 'assistant' && index === lastAssistantIndex
+            const isSpeakingThis = voice.activeMessageId === index && voice.isSpeaking
+            const isPausedThis = voice.activeMessageId === index && voice.isPaused
+
             return (
               <div key={index} className="message-animate-in">
                 <div className={`other-message ${item.role}`}>
-                  <span>{item.role === 'assistant' ? <Wifi size={14} /> : 'You'}</span>
+                  <div className="message-header-row">
+                    <span className="message-role-label">
+                      {item.role === 'assistant' ? <Wifi size={14} /> : null}
+                      {item.role === 'assistant' ? 'Signal Selector' : 'You'}
+                    </span>
+                    {isLatestAssistant && (
+                      <button
+                        type="button"
+                        className={`compact-audio-btn ${isSpeakingThis ? 'active-playing' : ''} ${isPausedThis ? 'active-paused' : ''}`}
+                        onClick={() => voice.togglePlayPause(item.content, index)}
+                        title={
+                          isSpeakingThis
+                            ? 'Pause audio'
+                            : isPausedThis
+                            ? 'Resume audio'
+                            : 'Listen to response'
+                        }
+                        aria-label="Audio playback"
+                      >
+                        {isSpeakingThis ? (
+                          <Pause size={12} />
+                        ) : isPausedThis ? (
+                          <Play size={12} />
+                        ) : (
+                          <Volume2 size={12} />
+                        )}
+                      </button>
+                    )}
+                  </div>
                   <div className="message-content">
                     <FormattedText content={item.content} />
                     {item.role === 'assistant' && index === lastAssistantIndex && !isInOrderFlow && (

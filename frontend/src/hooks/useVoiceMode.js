@@ -15,21 +15,39 @@ const SPEECH_SYNTH_LOCALE = {
  * text -> TTS (self-hosted Indic Parler, falling back to the browser's
  * own SpeechSynthesis API if the model is slow/unavailable).
  *
- * Both the STT and TTS backends are genuinely free (no API key, no
- * per-request cost) - see app/services/voice_service.py.
+ * Supports single compact audio button with pause & resume at paused position.
  */
 export function useVoiceMode() {
   const [isRecording, setIsRecording] = useState(false)
   const [isTranscribing, setIsTranscribing] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
+  const [activeMessageId, setActiveMessageId] = useState(null)
   const [voiceError, setVoiceError] = useState('')
+
   const mediaRecorderRef = useRef(null)
   const chunksRef = useRef([])
   const audioElRef = useRef(null)
   const recognitionRef = useRef(null)
   const speechResultRef = useRef('')
+  const playbackModeRef = useRef(null) // 'audio' | 'speechSynthesis' | null
+  const currentTextRef = useRef('')
 
   const startRecording = useCallback(async () => {
+    // Automatically stop any ongoing playback when recording starts
+    if (audioElRef.current) {
+      audioElRef.current.pause()
+      audioElRef.current.currentTime = 0
+      audioElRef.current = null
+    }
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
+    playbackModeRef.current = null
+    setIsSpeaking(false)
+    setIsPaused(false)
+    setActiveMessageId(null)
+
     setVoiceError('')
     speechResultRef.current = ''
 
@@ -170,10 +188,70 @@ export function useVoiceMode() {
     setIsRecording(false)
   }, [])
 
-  // Speaks text aloud with script/language auto-detection
-  const speak = useCallback(async (text) => {
+  // Completely stops and cleans up audio playback
+  const stopSpeaking = useCallback(() => {
+    if (audioElRef.current) {
+      audioElRef.current.pause()
+      audioElRef.current.currentTime = 0
+      audioElRef.current = null
+    }
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
+    playbackModeRef.current = null
+    currentTextRef.current = ''
+    setIsSpeaking(false)
+    setIsPaused(false)
+    setActiveMessageId(null)
+  }, [])
+
+  // Pauses speaking at current position
+  const pauseSpeaking = useCallback(() => {
+    if (playbackModeRef.current === 'audio' && audioElRef.current) {
+      audioElRef.current.pause()
+      setIsSpeaking(false)
+      setIsPaused(true)
+    } else if (playbackModeRef.current === 'speechSynthesis' && typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.pause()
+      setIsSpeaking(false)
+      setIsPaused(true)
+    }
+  }, [])
+
+  // Resumes speaking from paused position
+  const resumeSpeaking = useCallback(() => {
+    if (playbackModeRef.current === 'audio' && audioElRef.current) {
+      audioElRef.current.play().then(() => {
+        setIsSpeaking(true)
+        setIsPaused(false)
+      }).catch(() => {
+        stopSpeaking()
+      })
+    } else if (playbackModeRef.current === 'speechSynthesis' && typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.resume()
+      setIsSpeaking(true)
+      setIsPaused(false)
+    }
+  }, [stopSpeaking])
+
+  // Speaks text aloud from the beginning with single playback guarantee
+  const speak = useCallback(async (text, messageId = 'latest') => {
     if (!text || !text.trim()) return
+
+    // Guarantee never multiple audio playing simultaneously
+    if (audioElRef.current) {
+      audioElRef.current.pause()
+      audioElRef.current = null
+    }
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
+
+    currentTextRef.current = text
+    setActiveMessageId(messageId)
     setIsSpeaking(true)
+    setIsPaused(false)
+
     try {
       const res = await fetch(`${API}/api/v1/voice/synthesize`, {
         method: 'POST',
@@ -184,43 +262,80 @@ export function useVoiceMode() {
       const data = body.data || body
 
       if (data.used_fallback || !data.audio_base64) {
-        speakWithBrowserTts(text, () => setIsSpeaking(false))
+        playbackModeRef.current = 'speechSynthesis'
+        speakWithBrowserTts(text, () => {
+          setIsSpeaking(false)
+          setIsPaused(false)
+          setActiveMessageId(null)
+          playbackModeRef.current = null
+        })
         return
       }
 
+      playbackModeRef.current = 'audio'
       const audio = new Audio(`data:audio/wav;base64,${data.audio_base64}`)
       audioElRef.current = audio
-      audio.onended = () => setIsSpeaking(false)
-      audio.onerror = () => {
-        speakWithBrowserTts(text, () => setIsSpeaking(false))
+
+      audio.onended = () => {
+        setIsSpeaking(false)
+        setIsPaused(false)
+        setActiveMessageId(null)
+        playbackModeRef.current = null
+        audioElRef.current = null
       }
+
+      audio.onerror = () => {
+        playbackModeRef.current = 'speechSynthesis'
+        speakWithBrowserTts(text, () => {
+          setIsSpeaking(false)
+          setIsPaused(false)
+          setActiveMessageId(null)
+          playbackModeRef.current = null
+        })
+      }
+
       await audio.play()
     } catch (err) {
-      speakWithBrowserTts(text, () => setIsSpeaking(false))
+      playbackModeRef.current = 'speechSynthesis'
+      speakWithBrowserTts(text, () => {
+        setIsSpeaking(false)
+        setIsPaused(false)
+        setActiveMessageId(null)
+        playbackModeRef.current = null
+      })
     }
   }, [])
 
-  const stopSpeaking = useCallback(() => {
-    if (audioElRef.current) {
-      audioElRef.current.pause()
-      audioElRef.current = null
+  // One compact toggle action: plays, pauses, or resumes from paused position
+  const togglePlayPause = useCallback((text, messageId = 'latest') => {
+    if (activeMessageId === messageId) {
+      if (isSpeaking) {
+        pauseSpeaking()
+      } else if (isPaused) {
+        resumeSpeaking()
+      } else {
+        speak(text, messageId)
+      }
+    } else {
+      speak(text, messageId)
     }
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.cancel()
-    }
-    setIsSpeaking(false)
-  }, [])
+  }, [activeMessageId, isSpeaking, isPaused, pauseSpeaking, resumeSpeaking, speak])
 
   return {
     isRecording,
     isTranscribing,
     isSpeaking,
+    isPaused,
+    activeMessageId,
     voiceError,
     startRecording,
     stopRecordingAndTranscribe,
     cancelRecording,
     speak,
+    pauseSpeaking,
+    resumeSpeaking,
     stopSpeaking,
+    togglePlayPause,
     micSupported: typeof navigator !== 'undefined' && !!navigator.mediaDevices?.getUserMedia,
   }
 }
