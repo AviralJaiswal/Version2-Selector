@@ -26,14 +26,14 @@ Context:
 session_mode: {{session_mode}}
 workflow_state: {{workflow_state}}
 customer_message: {{message}}
-- If customer_message is empty, ambiguous, a greeting, introducing user's name, general conversation, or asking about general/unrelated topics (e.g. gym workout plans, recipes, fitness, weather), choose KNOWLEDGE.
+- If customer_message is empty, ambiguous, a greeting, introducing user's name, general conversation, or asking about general/unrelated/ambiguous topics (e.g. "I want a gym plan", "I want a cricket plan", "cricket plan", mobile recharge, recipes, fitness, weather), choose KNOWLEDGE.
 - If session_mode or workflow_state is missing, classify from customer_message alone.
 
 Requirements:
 - Return exactly one JSON object with one key named "route".
 - route must be exactly one of: TRANSACTION, KNOWLEDGE.
-- Choose TRANSACTION for explicit order booking intent, buying/purchasing plans, checking coverage/serviceability, new connection requests, 6-digit PIN codes, full street addresses, or appointment slots.
-- Choose KNOWLEDGE for greetings ("Hi", "Hello"), customer introducing their name ("My name is...", "I am...", single name), questions about what Signal Selector is or does, plan comparisons, recommendations before purchase, prices, speeds, OTT benefits, routers, installation fees, refund policies, installation timelines, troubleshooting, general conversation, or unrelated questions (e.g. gym workout plans, general chit-chat).
+- Choose TRANSACTION for explicit telecom broadband order booking intent ("I want a new connection", "I want to order broadband", "book connection"), buying/purchasing broadband connections, checking coverage/serviceability for an address, 6-digit PIN codes, full street addresses, or appointment slots.
+- Choose KNOWLEDGE for greetings ("Hi", "Hello"), customer introducing their name ("My name is...", "I am...", single name), questions about what Signal Selector is or does, plan comparisons, recommendations before purchase, prices, speeds, OTT benefits, routers, installation fees, refund policies, installation timelines, troubleshooting, general conversation, or ambiguous/unrelated plan queries (e.g. "I want a cricket plan", "I want a gym plan", mobile SIM recharge).
 - If a message contains both an FAQ and an explicit order action, choose TRANSACTION.
 - Do not include markdown, code fences, explanations, or extra keys.
 - Maximum 30 characters.

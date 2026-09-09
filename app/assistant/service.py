@@ -362,7 +362,7 @@ def _is_order_intent_trigger(text: str) -> bool:
         "what are", "what is", "tell me", "show me", "how much", "which plan",
         "recommend", "compare", "options", "details", "explain", "plans available",
         "available plans", "list plans", "standard plans", "broadband plans", "what plans",
-        "choose the right plan", "help me choose"
+        "choose the right plan", "help me choose", "cricket plan", "cricket", "gym plan", "gym", "workout"
     )
     if any(q in low for q in info_inquiry_phrases) and not any(k in low for k in ["buy", "book", "purchase", "subscribe", "check coverage", "check serviceability", "new connection"]):
         return False

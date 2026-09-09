@@ -35,7 +35,7 @@ export function ExistingChatView({ onBack }) {
   const [chosenDate, setChosenDate] = useState(null)
   const [order, setOrder] = useState(null)
   const [showPaymentGateway, setShowPaymentGateway] = useState(false)
-  const started = useRef(false)
+  const initializedSessionIdRef = useRef(null)
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
@@ -89,8 +89,7 @@ export function ExistingChatView({ onBack }) {
           followups: followups,
           ...(shouldAttachPlans ? { plans: rawPlans } : {}),
           ...(existingPlanOptions && existingPlanOptions.length > 0 ? { plans: existingPlanOptions } : {}),
-          ...(response.recommended_plan ? { recommended_plan: response.recommended_plan } : {}),
-          ...(response.proposed_plan ? { proposed_plan: response.proposed_plan, awaitingPlanChangeConfirm: true } : {})
+          ...(response.recommended_plan ? { recommended_plan: response.recommended_plan } : {})
         }
         if (overrideSessionId) {
           return [newAssistantMsg]
@@ -114,6 +113,8 @@ export function ExistingChatView({ onBack }) {
   }
 
   async function fetchWelcomeGreeting(sid) {
+    if (!sid || initializedSessionIdRef.current === sid) return
+    initializedSessionIdRef.current = sid
     setBusy(true)
     try {
       const res = await request('/api/v1/assistant/welcome', { sessionId: sid, profile: 'existing' })
@@ -125,10 +126,10 @@ export function ExistingChatView({ onBack }) {
       }
     } catch (e) {
       console.warn("Welcome API fallback", e)
+      send('', 'existing', null, sid)
     } finally {
       setBusy(false)
     }
-    send('', 'existing', null, sid)
   }
 
   const resetSession = () => {
@@ -137,6 +138,7 @@ export function ExistingChatView({ onBack }) {
       sessionStorage.removeItem(key)
     } catch { }
     const freshId = (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : 'sess-' + Math.random().toString(36).substring(2, 11) + Date.now())
+    initializedSessionIdRef.current = null
     setSessionId(freshId)
     setMessages([])
     setState({})
@@ -146,16 +148,14 @@ export function ExistingChatView({ onBack }) {
     setOrder(null)
     setShowPaymentGateway(false)
     setError('')
-    started.current = true
     fetchWelcomeGreeting(freshId)
   }
 
   useEffect(() => {
-    if (!started.current) {
-      started.current = true
+    if (sessionId && initializedSessionIdRef.current !== sessionId) {
       fetchWelcomeGreeting(sessionId)
     }
-  }, [isExisting])
+  }, [sessionId])
 
   const selectPlan = (plan) => {
     send(`Selected plan: ${plan.name}`, null, { action: 'PLAN_SELECTED', selected_plan: plan })

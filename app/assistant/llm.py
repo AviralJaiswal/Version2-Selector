@@ -128,6 +128,15 @@ def strip_thinking_and_reasoning(text: str | None) -> str:
     # 4. Strip system instruction or language directive echoes
     cleaned = re.sub(r"\[(?:System Instruction|Language Directive|Internal Analysis)\]:?.*?\n", "", cleaned, flags=re.IGNORECASE)
 
+    # 5. Deduplicate repeated identical paragraphs/sentences
+    paragraphs = [p.strip() for p in cleaned.split("\n\n") if p.strip()]
+    unique_paragraphs = []
+    for p in paragraphs:
+        if p not in unique_paragraphs:
+            unique_paragraphs.append(p)
+    if unique_paragraphs:
+        cleaned = "\n\n".join(unique_paragraphs)
+
     return cleaned.strip()
 
 
