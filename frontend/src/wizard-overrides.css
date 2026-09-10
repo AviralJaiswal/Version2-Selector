@@ -1175,30 +1175,20 @@ input[type="radio"],
 }
 
 /* Compact bot audio playback button */
-.message-header-row {
+.message-voice-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 100%;
   margin-bottom: 6px;
-}
-
-.message-role-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #88849e;
 }
 
 .compact-audio-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: 1px solid #ffccd0;
   background: #ffffff;

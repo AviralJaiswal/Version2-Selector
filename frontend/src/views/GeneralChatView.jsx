@@ -48,7 +48,7 @@ export function GeneralChatView({ onBack }) {
     setBusy(true)
     setError('')
     if (message && !message.startsWith('[')) {
-      setMessages((items) => [...items, { role: 'user', content: message }])
+      setMessages((items) => [...items, { role: 'user', content: message, viaVoice: Boolean(viaVoice) }])
     }
     const mergedFields = {
       ...(isExisting ? { is_existing_customer: true } : {}),
@@ -81,6 +81,7 @@ export function GeneralChatView({ onBack }) {
           role: 'assistant',
           content: response.answer,
           followups: followups,
+          viaVoice: Boolean(viaVoice),
           ...(shouldAttachPlans ? { plans: rawPlans } : {}),
           ...(response.recommended_plan ? { recommended_plan: response.recommended_plan } : {})
         }
@@ -385,40 +386,38 @@ export function GeneralChatView({ onBack }) {
             const isLatestAssistant = item.role === 'assistant' && index === lastAssistantIndex
             const isSpeakingThis = voice.activeMessageId === index && voice.isSpeaking
             const isPausedThis = voice.activeMessageId === index && voice.isPaused
+            const showAudioBtn = isLatestAssistant && Boolean(item.viaVoice)
 
             return (
               <div key={index} className="message-animate-in">
                 <div className={`other-message ${item.role}`}>
-                  <div className="message-header-row">
-                    <span className="message-role-label">
-                      {item.role === 'assistant' ? <Wifi size={14} /> : null}
-                      {item.role === 'assistant' ? 'Signal Selector' : 'You'}
-                    </span>
-                    {isLatestAssistant && (
-                      <button
-                        type="button"
-                        className={`compact-audio-btn ${isSpeakingThis ? 'active-playing' : ''} ${isPausedThis ? 'active-paused' : ''}`}
-                        onClick={() => voice.togglePlayPause(item.content, index)}
-                        title={
-                          isSpeakingThis
-                            ? 'Pause audio'
-                            : isPausedThis
-                            ? 'Resume audio'
-                            : 'Listen to response'
-                        }
-                        aria-label="Audio playback"
-                      >
-                        {isSpeakingThis ? (
-                          <Pause size={12} />
-                        ) : isPausedThis ? (
-                          <Play size={12} />
-                        ) : (
-                          <Volume2 size={12} />
-                        )}
-                      </button>
-                    )}
-                  </div>
+                  <span>{item.role === 'assistant' ? <Wifi size={14} /> : 'You'}</span>
                   <div className="message-content">
+                    {showAudioBtn && (
+                      <div className="message-voice-bar">
+                        <button
+                          type="button"
+                          className={`compact-audio-btn ${isSpeakingThis ? 'active-playing' : ''} ${isPausedThis ? 'active-paused' : ''}`}
+                          onClick={() => voice.togglePlayPause(item.content, index)}
+                          title={
+                            isSpeakingThis
+                              ? 'Pause audio'
+                              : isPausedThis
+                              ? 'Resume audio'
+                              : 'Listen to response'
+                          }
+                          aria-label="Audio playback"
+                        >
+                          {isSpeakingThis ? (
+                            <Pause size={12} />
+                          ) : isPausedThis ? (
+                            <Play size={12} />
+                          ) : (
+                            <Volume2 size={12} />
+                          )}
+                        </button>
+                      </div>
+                    )}
                     <FormattedText content={item.content} />
                     {item.role === 'assistant' && index === lastAssistantIndex && !isInOrderFlow && (
                       <SuggestedResponses followups={item.followups} onSelect={send} busy={busy} />
