@@ -1,5 +1,6 @@
 import logging
 import random
+import re
 from app.assistant.llm import generate, generate_json
 from app.assistant.prompts import get_prompt, get_current_language
 from app.utils.trace import trace, trace_async
@@ -8,10 +9,9 @@ logger = logging.getLogger(__name__)
 
 _DYNAMIC_GREETINGS = {
     "existing": [
-        "Welcome back to Signal Selector! I am your broadband assistant. How can I help with your account, speed upgrades, or technical support today?",
-        "Hello again! As your Signal Selector broadband guide, I'm here to assist with your active fiber connection, router settings, or plan upgrades.",
-        "Welcome back! How can I support your internet connection today? You can check billing, run automated line diagnostics, or explore higher speed plans.",
-        "Glad to have you back at Signal Selector! Let me know if you need assistance with your Wi-Fi router, account settings, or upgrading to Gigabit speeds.",
+        "Welcome back to Signal Selector! How can I help with your current plan, connection troubleshooting, router specs, or plan upgrades today?",
+        "Hello again! How can I help with your current plan, connection troubleshooting, router specs, or plan upgrades today?",
+        "Welcome back to Signal Selector! I'm here to help with your current plan, connection troubleshooting, router specs, or plan upgrades.",
     ],
     "general": [
         "Welcome to Signal Selector! I am your AI broadband assistant. How can I help you today? You can explore our high-speed fiber plans, check installation timelines, or inquire about Wi-Fi 6 router features.",
@@ -25,33 +25,37 @@ _DYNAMIC_GREETINGS = {
 
 @trace
 def generate_dynamic_greeting(profile: str = "general") -> str:
-    """Generate dynamic welcome greeting strictly using AI model prompt instructions with dynamic variation."""
+    """Generate a concise, safe welcome greeting for visitors and existing customers."""
+    profile_key = "existing" if profile == "existing" else "general"
+    greetings_pool = _DYNAMIC_GREETINGS.get(profile_key, _DYNAMIC_GREETINGS["general"])
+    fallback = random.choice(greetings_pool)
+
+    if profile == "existing":
+        return fallback
+
     styles = get_prompt("welcome.styles").splitlines()
     chosen_style = random.choice(styles) if styles else "Greet the user warmly as Signal Selector's broadband AI assistant."
 
-    if profile == "existing":
-        prompt = get_prompt(
-            "welcome.existing",
-            chosen_style=chosen_style,
-            profile=profile,
-        )
-    else:
-        prompt = get_prompt(
-            "welcome.general",
-            chosen_style=chosen_style,
-            profile=profile,
-        )
+    prompt = get_prompt(
+        "welcome.general",
+        chosen_style=chosen_style,
+        profile=profile,
+    )
 
     try:
         llm_text = generate(prompt, temperature=0.95, timeout=6, max_tokens=150)
         if llm_text and len(llm_text.strip()) > 10:
-            return llm_text.strip()
+            cleaned = llm_text.strip().replace("**", "").replace("```", "").strip()
+            if profile == "existing":
+                forbidden_regex = r"\b(pin|pincode|payment|booking|appointment|address)\b"
+            else:
+                forbidden_regex = r"\b(pin|pincode|payment|booking|appointment)\b"
+            if len(cleaned.split()) <= 35 and not re.search(forbidden_regex, cleaned.lower()):
+                return cleaned
     except Exception as exc:
         logger.warning("Dynamic LLM greeting generation error: %s", exc)
 
-    profile_key = "existing" if profile == "existing" else "general"
-    greetings_pool = _DYNAMIC_GREETINGS.get(profile_key, _DYNAMIC_GREETINGS["general"])
-    return random.choice(greetings_pool)
+    return fallback
 
 
 def get_rag_faq_topics() -> list[str]:

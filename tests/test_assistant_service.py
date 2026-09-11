@@ -56,11 +56,22 @@ class AssistantServiceTests(unittest.TestCase):
         self.assertIn("complete street address", result["response"])
         mock_llm_prompt.assert_called_once_with("600013", "Chennai", "Tamil Nadu")
 
+    def test_existing_customer_welcome_is_short_and_support_focused(self):
+        from app.services.welcome_service import generate_dynamic_greeting
+        greeting = generate_dynamic_greeting(profile="existing")
+        self.assertLessEqual(len(greeting.split()), 35)
+        self.assertNotIn("address", greeting.lower())
+        self.assertNotIn("pin", greeting.lower())
+        self.assertNotIn("payment", greeting.lower())
+        self.assertNotIn("booking", greeting.lower())
+        self.assertNotIn("appointment", greeting.lower())
+        self.assertIn("Signal Selector", greeting)
+
     @patch("app.services.welcome_service.generate")
     def test_welcome_service_prompts_for_complete_address(self, mock_llm_gen):
         from app.services.welcome_service import generate_dynamic_greeting
         mock_llm_gen.return_value = "Hello! Welcome to Signal Selector. Please share your complete street address."
-        greeting = generate_dynamic_greeting()
+        greeting = generate_dynamic_greeting(profile="general")
         self.assertIn("complete street address", greeting)
         call_args = mock_llm_gen.call_args[0][0]
         self.assertIn("complete street address", call_args)

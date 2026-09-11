@@ -626,13 +626,12 @@ def _handle_existing_customer_message(
             greeting,
             "PLAN_OVERVIEW",
             current_plan=current_plan,
-            upgrade_options=options["upgrades"],
-            downgrade_options=options["downgrades"],
         )
 
-    # ---- Step 2: verified - handle plan change target selection / confirmation ----
+    # ---- Step 2: verified existing customer support flow ----
     customer = session.get("customer") or {}
     current_plan = session.get("current_plan")
+    session.pop("awaiting_plan_browse_confirmation", None)
 
     selected_plan = (structured_fields or {}).get("selected_plan")
     if selected_plan and selected_plan.get("plan_id"):
