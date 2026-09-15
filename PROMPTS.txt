@@ -1,0 +1,550 @@
+# Signal Selector backend LLM prompts
+#
+# Edit prompt text between BEGIN_PROMPT and END_PROMPT markers.
+# Runtime variables use {{placeholder}} tokens - substituted via str.format
+# after {{ }} is converted to { } by the loader.
+#
+# Every prompt call site in the codebase is keyed here. Do not remove a key
+# that is referenced in code without also updating the code.
+
+BEGIN_PROMPT llm.gemini_system_instruction
+[System Instruction]: {{system}}
+END_PROMPT llm.gemini_system_instruction
+
+BEGIN_PROMPT llm.generate_json.response_suffix
+Respond with valid JSON only.
+END_PROMPT llm.generate_json.response_suffix
+
+BEGIN_PROMPT llm.generate_json.default_system
+You return strict JSON objects only, with no markdown fences.
+END_PROMPT llm.generate_json.default_system
+
+BEGIN_PROMPT llm.classify_conversation_route
+Classify the customer message as either a transaction-flow action or a knowledge/FAQ question for a telecom broadband assistant.
+
+Context:
+session_mode: {{session_mode}}
+workflow_state: {{workflow_state}}
+customer_message: {{message}}
+- If customer_message is empty, ambiguous, a greeting, introducing user's name, general conversation, or asking about general/unrelated/ambiguous topics (e.g. "I want a gym plan", "I want a cricket plan", "cricket plan", mobile recharge, recipes, fitness, weather), choose KNOWLEDGE.
+- If session_mode or workflow_state is missing, classify from customer_message alone.
+
+Requirements:
+- Return exactly one JSON object with one key named "route".
+- route must be exactly one of: TRANSACTION, KNOWLEDGE.
+- Choose TRANSACTION for explicit telecom broadband order booking intent ("I want a new connection", "I want to order broadband", "book connection"), buying/purchasing broadband connections, checking coverage/serviceability for an address, 6-digit PIN codes, full street addresses, or appointment slots.
+- Choose KNOWLEDGE for greetings ("Hi", "Hello"), customer introducing their name ("My name is...", "I am...", single name), questions about what Signal Selector is or does, plan comparisons, recommendations before purchase, prices, speeds, OTT benefits, routers, installation fees, refund policies, installation timelines, troubleshooting, general conversation, or ambiguous/unrelated plan queries (e.g. "I want a cricket plan", "I want a gym plan", mobile SIM recharge).
+- If a message contains both an FAQ and an explicit order action, choose TRANSACTION.
+- Do not include markdown, code fences, explanations, or extra keys.
+- Maximum 30 characters.
+END_PROMPT llm.classify_conversation_route
+
+BEGIN_PROMPT llm.classify_conversation_route.system_json
+Return strict JSON with a single route field. No markdown.
+END_PROMPT llm.classify_conversation_route.system_json
+
+BEGIN_PROMPT llm.classify_conversation_route.system_fallback
+Reply with only TRANSACTION or KNOWLEDGE.
+END_PROMPT llm.classify_conversation_route.system_fallback
+
+BEGIN_PROMPT plan_recommendation.conversational
+Select the single best matching broadband plan for the customer's usage needs.
+
+Available Plans:
+{{context_str}}
+
+Customer Input:
+- Number of users: {{users_or_query}}
+- Number of connected devices: {{devices_or_query}}
+- Primary usage purpose: {{purpose_or_query}}
+- Target Recommended Speed: {{target_speed}} Mbps (Price tier matching ₹499 for 40M, ₹799 for 100M, ₹999 for 200M, ₹1499 for 300M, ₹2499 for 500M, ₹3999 for 1000M)
+
+Rules:
+- For minimal usage (1-2 users, minimal devices, basic browsing), pick the Basic 40M plan (₹499/month).
+- For heavy usage (many users/devices or 4K/gaming), pick a high-speed plan ({{target_speed}} Mbps or higher).
+- Return exactly one JSON object with keys "recommended_plan_name" and "short_intro".
+- recommended_plan_name must match one plan name from Available Plans.
+- short_intro must be friendly, enthusiastic, and under 18 words.
+END_PROMPT plan_recommendation.conversational
+
+BEGIN_PROMPT service.address_confirmation
+Generate a short 2-line customer-facing message for a verified broadband service address.
+
+Context:
+formatted_address: {{formatted_address}}
+- If formatted_address is missing or empty, refer to "your submitted address" and do not invent address details.
+
+Requirements:
+- Line 1: State that the address is verified as serviceable, and explicitly ask: "Is this your correct address?"
+- Line 2: On a new line, state that confirming this allows us to proceed with showing the available fiber plans in your region.
+- Line 1 MUST contain a question asking if the address is correct (ending with a question mark).
+- Line 2 must be an explanatory statement starting with phrases like "So we can proceed...", "Once confirmed...", or "Confirming this allows us to...".
+- Put Line 2 on its own line using a newline character.
+- Do not mention booking, payment, appointments, or customer details.
+- Maximum 35 words total.
+- No markdown formatting.
+END_PROMPT service.address_confirmation
+
+BEGIN_PROMPT service.plan_permission
+Generate a short customer-facing question asking permission to show available fiber plans.
+
+Context:
+formatted_address: {{formatted_address}}
+- If formatted_address is missing or empty, say "your confirmed address" and do not invent address details.
+
+Requirements:
+- Acknowledge that the address is confirmed.
+- Ask whether to show available fiber plans for that location.
+- Do not mention payment, booking, appointment, or customer details.
+- Use one sentence.
+- Maximum 20 words.
+- No markdown.
+END_PROMPT service.plan_permission
+
+BEGIN_PROMPT service.confirmation_intent
+Classify the customer's response to the current yes/no broadband-flow question.
+
+Context:
+message: {{message}}
+- If message is empty, vague, or unrelated to the yes/no question, classify it as OTHER.
+
+Requirements:
+- Return exactly one JSON object with one key named "intent".
+- intent must be exactly one of: CONFIRM, DENY, OTHER.
+- Use CONFIRM when the customer agrees, confirms, says the address is correct, asks to proceed, or asks to show plans.
+- Use DENY when the customer disagrees, says the address is wrong, wants a different address, wants to change details, or cancels.
+- Use OTHER for questions, ambiguous replies, mixed yes/no replies, or unrelated input.
+- Do not include markdown, code fences, explanations, or extra keys.
+- Maximum 60 characters.
+END_PROMPT service.confirmation_intent
+
+BEGIN_PROMPT service.confirmation_intent.system
+Return strict JSON with intent field only.
+END_PROMPT service.confirmation_intent.system
+
+BEGIN_PROMPT service.plan_selection_intent
+Classify the customer's message during the plan selection stage of a broadband order.
+
+Context:
+message: {{message}}
+- If customer says "yes", "sure", "yeah", "yes please", or asks for a recommendation, classify as RECOMMENDATION_REQUEST.
+- If message is a specific question about router, pricing, installation, refund, or policy, classify as FAQ_QUESTION.
+
+Requirements:
+- Return exactly one JSON object with one key named "intent".
+- intent must be exactly one of: RECOMMENDATION_REQUEST, FAQ_QUESTION.
+- Do not include markdown, code fences, explanations, or extra keys.
+- Maximum 80 characters.
+END_PROMPT service.plan_selection_intent
+
+BEGIN_PROMPT service.plan_selection_intent.system
+Return strict JSON with intent field only.
+END_PROMPT service.plan_selection_intent.system
+
+BEGIN_PROMPT service.plans_unlocked
+Generate an enthusiastic, celebratory two-line customer-facing message announcing that regional fiber plans have been discovered and unlocked.
+
+Context:
+formatted_address: {{formatted_address}}
+state_or_region: {{state_or_region}}
+plan_count: {{plan_count}}
+- If formatted_address is missing, refer to "your confirmed address".
+- If state_or_region is missing, say "your region".
+- If plan_count is 0 or missing, say "available fiber plan options" without claiming a number.
+
+Requirements:
+- Line 1 must sound joyful, positive, and celebrate the achievement of discovering high-speed fiber coverage for their location (e.g. "Great news!", "Fantastic news!", "Awesome news! High-speed fiber plans are available for {{state_or_region}} listed below.").
+- Line 2 must ask: "Which plan suits you best, or would you like a recommendation?"
+- Put Line 2 on a new line.
+- Do not mention booking, payment, appointments, or customer details.
+- Maximum 35 words total.
+- No markdown.
+END_PROMPT service.plans_unlocked
+
+BEGIN_PROMPT service.pincode_only
+Generate a short customer-facing message explaining that PIN-code-only input cannot complete premise qualification.
+
+Context:
+pincode: {{pincode}}
+city: {{city}}
+state: {{state}}
+location_info: {{location_info}}
+- If city or state is missing, omit that locality detail instead of inventing it.
+- If pincode is missing, ask for both complete street address and a valid 6-digit PIN code.
+
+Requirements:
+- Politely confirm the PIN code area is eligible or pending exact premise verification.
+- Make clear that the PIN code alone is insufficient.
+- Ask for the complete street address: house/flat number, building name if available, street, and locality.
+- Do not ask for plan selection, booking, payment, or appointment details.
+- Maximum 35 words.
+- No markdown.
+END_PROMPT service.pincode_only
+
+BEGIN_PROMPT service.complete_address
+Generate a short, friendly customer-facing message for a customer wanting to order/book a new broadband connection.
+
+Context:
+pincode: {{pincode}}
+pin_context: {{pin_context}}
+{{user_context}}
+
+Requirements:
+- Politely acknowledge their interest in getting a new connection.
+- Request their complete street address (including house/flat number, building name, street, area/locality, and 6-digit PIN code) to check exact serviceability and local plan availability.
+- Do NOT list, mention, or dump plan names, speeds, or prices.
+- Do NOT mention booking confirmation, payment, or technician appointment slots yet.
+- Maximum 35 words.
+- No markdown formatting or bullet points.
+END_PROMPT service.complete_address
+
+BEGIN_PROMPT service.invalid_pincode
+Generate a short customer-facing message for an invalid Indian postal PIN code.
+
+Context:
+pincode: {{pincode}}
+- If pincode is empty, refer to "that PIN code" instead of quoting an empty value.
+
+Requirements:
+- State that the supplied PIN code is invalid.
+- Explain that valid Indian PIN codes are 6 digits and start with digits 1 through 8.
+- Ask for the complete street address with the correct PIN code.
+- Do not mention serviceability, plans, booking, payment, or appointments.
+- Maximum 30 words.
+- No markdown.
+END_PROMPT service.invalid_pincode
+
+BEGIN_PROMPT service.unserviceable
+Generate a polite customer-facing message for a location where fiber service is unavailable.
+
+Context:
+pincode: {{pincode}}
+fallback_message: {{fallback_message}}
+- If pincode is missing, say "this area" instead of inventing a PIN code.
+- If fallback_message contains a specific city or state, keep the meaning consistent but do not copy technical wording.
+
+Requirements:
+- State that fiber service is currently unavailable for the submitted area.
+- Mention that coverage is expanding.
+- Ask whether the customer wants to check a different complete street address with PIN code.
+- Do not offer plans, booking, payment, or appointments.
+- Maximum 30 words.
+- No markdown.
+END_PROMPT service.unserviceable
+
+BEGIN_PROMPT service.escape_reset
+Generate a friendly customer-facing message acknowledging that the customer wants to reset or change address.
+
+Context:
+No interpolated variables are available for this message.
+- Since no previous address should be reused, ask for a fresh complete address.
+
+Requirements:
+- Acknowledge the reset or address change.
+- Ask for the complete street address: house/flat number, street, locality, and PIN code.
+- Make clear that both address and PIN code are required for coverage verification.
+- Do not mention plans, booking, payment, or appointments.
+- Use one sentence.
+- Maximum 25 words.
+- No markdown.
+END_PROMPT service.escape_reset
+
+BEGIN_PROMPT welcome.styles
+Greet the user warmly as Signal Selector's broadband AI assistant.
+Greet the user enthusiastically as Signal Selector's fiber connection guide.
+Provide a friendly, professional welcome as Signal Selector's broadband specialist.
+Give a concise, modern chat greeting introducing Signal Selector broadband assistance.
+END_PROMPT welcome.styles
+
+BEGIN_PROMPT welcome.existing
+Generate a concise customer-facing welcome greeting for an existing Signal Selector customer.
+
+Context:
+chosen_style: {{chosen_style}}
+profile: {{profile}}
+
+Intent (do not copy this wording verbatim):
+Ask the customer for their registered contact number so their connection can be verified.
+
+Requirements:
+- Follow chosen_style naturally.
+- Welcome the customer back briefly as Signal Selector's existing-customer assistant.
+- Ask for the registered 10-digit mobile number used on their fiber connection so you can verify the account.
+- Do NOT mention upgrades, add-ons, billing, troubleshooting, address, PIN code, payment, booking, or appointments yet.
+- Do NOT dump plans or account details.
+- Maximum 35 words.
+- No markdown.
+END_PROMPT welcome.existing
+
+BEGIN_PROMPT welcome.general
+Generate a concise, welcoming, customer-facing greeting for a visitor to the Signal Selector broadband assistant.
+
+Context:
+chosen_style: {{chosen_style}}
+profile: {{profile}}
+
+Requirements:
+- Follow chosen_style naturally.
+- Welcome the visitor warmly to Signal Selector.
+- Offer to help explore high-speed fiber broadband plans, answer questions about policies, installation timelines, or routers, or check serviceability.
+- If mentioning serviceability, state that a complete street address with PIN code is needed. Do NOT ask for just a 6-digit pincode; ask for their complete street address.
+- Keep it friendly, conversational, and open-ended without forcing booking or address workflows prematurely.
+- Do not mention payment, booking, or appointments.
+- Maximum 35 words.
+- No markdown.
+END_PROMPT welcome.general
+
+BEGIN_PROMPT welcome.followups
+Generate 2 to 3 concise, relevant, and fresh suggested follow-up responses (questions or actions) for the user.
+
+Context:
+profile: {{profile}}
+user_previous_message: {{message}}
+assistant_last_response: {{answer}}
+available_rag_faq_topics:
+{{rag_topics}}
+valid_application_actions:
+{{valid_actions}}
+previously_shown_suggestions: {{previous_suggestions}}
+
+Requirements:
+- Return a JSON object with a single key "suggestions" containing an array of 2 to 3 short text strings (3 to 8 words each).
+- GROUNDING: Suggested questions MUST be strictly grounded in what is covered under available_rag_faq_topics so the RAG assistant can accurately answer them.
+- DO NOT generate random, speculative, or complex questions about information not present in available_rag_faq_topics.
+- ACTION OPTIONS: Suggestions can be either questions grounded in RAG topics OR direct user actions from valid_application_actions (such as "I want a new connection", "I want to order a connection", "Check plan availability for my area", or "Upgrade my fiber plan").
+- DYNAMIC RELEVANCE: Dynamically select a natural mix of follow-up questions and/or user actions that best fit the ongoing conversation context and the assistant's latest response.
+- CRITICAL: Do NOT repeat, duplicate, or rephrase any suggestions from previously_shown_suggestions: [{{previous_suggestions}}].
+- Return valid JSON only with key "suggestions".
+END_PROMPT welcome.followups
+
+BEGIN_PROMPT welcome.followups.system
+Return strict JSON with suggestions array.
+END_PROMPT welcome.followups.system
+
+BEGIN_PROMPT address.street_extraction
+Determine whether the customer message contains a specific physical street address for broadband service qualification.
+
+Context:
+customer_message: {{text}}
+pincode: {{pincode}}
+- If pincode is missing, still classify whether a street address is present.
+- If customer_message is empty, intent-only (e.g. "I want to get a new connection for my home", "I need broadband for my flat"), a greeting, introducing customer name (e.g. "Rahul", "My name is John"), generic words ("home", "my home", "office"), or only contains a PIN code, return has_street_address as false.
+
+Requirements:
+- Return exactly one JSON object with keys "has_street_address" and "street_address".
+- Set has_street_address to true only when the message contains a specific premise detail such as house/flat/plot number, apartment/building name, street/road/lane, colony, nagar, sector, block, or specific area name.
+- Set has_street_address to false for greetings, names, general questions, plan discovery requests, serviceability requests, city-only input, pincode-only input, or generic terms like 'home'/'my home'/'office'.
+- If true, street_address must contain only the extracted street/premise portion and must exclude the PIN code.
+- If false, street_address must be null.
+- If the message contains conflicting or ambiguous location text, return false instead of guessing.
+- Do not include markdown, code fences, explanations, or extra keys.
+- Maximum 90 characters for street_address.
+END_PROMPT address.street_extraction
+
+BEGIN_PROMPT address.street_extraction.system
+You return strict JSON only.
+END_PROMPT address.street_extraction.system
+
+BEGIN_PROMPT existing.pre_verify
+You are Signal Selector's existing-customer assistant. The customer's account is NOT verified yet.
+
+Recent conversation:
+{{history}}
+
+Customer message:
+{{message}}
+
+Rules:
+- Use only natural conversation. Do not retrieve or invent account, plan, billing, or order details.
+- If the message is about broadband/account support, politely explain you first need their registered 10-digit mobile number to verify the connection.
+- If the message is off-topic (gym, recipes, weather, homework, cricket as a sport-only request, etc.), politely say you can only help with Signal Selector broadband and still ask for the registered contact number.
+- If they already tried to share a number but it was invalid, ask them to re-check the 10-digit registered mobile number.
+- Keep the reply to 2 short sentences. No markdown. No plan lists.
+END_PROMPT existing.pre_verify
+
+BEGIN_PROMPT existing.phone_not_found
+You are Signal Selector's existing-customer assistant. No active connection was found for the number the customer just shared.
+
+Number they provided: {{phone}}
+Customer message: {{message}}
+
+Write a short, natural reply asking them to re-check and share the registered 10-digit mobile number on their Signal Selector connection. Do not invent account details. Do not start upgrade/add-on/support help yet. Maximum 2 sentences. No markdown.
+END_PROMPT existing.phone_not_found
+
+BEGIN_PROMPT existing.verified_ok
+Generate a short, natural confirmation that the customer's Signal Selector connection was found.
+
+Customer first name / name: {{name}}
+Do NOT list plan details, prices, or account fields — those are shown separately in the UI.
+Use an enthusiastic phrase like "Great news", "Excellent", or "Awesome" and include the customer's name naturally.
+Example style: "Excellent Rahul! I found your Signal Selector connection details."
+No markdown. Maximum 18 words.
+END_PROMPT existing.verified_ok
+
+BEGIN_PROMPT existing.something_else
+The verified customer tapped "Something else". Ask in one short, friendly sentence what else you can help with regarding their Signal Selector connection (plan, add-on, billing, or support). No markdown.
+END_PROMPT existing.something_else
+
+BEGIN_PROMPT existing.other_queries
+The verified Signal Selector customer just chose "Other Queries" after phone verification.
+
+Customer name: {{name}}
+Current plan: {{current_plan_summary}}
+Relevant support knowledge for this customer:
+{{retrieved_context}}
+
+Write a short, natural, conversational prompt asking what problem they are facing with their connection or account. Use the support knowledge only to make the invitation specific and useful. Invite them to describe the issue in their own words. Do not list menu options, do not dump FAQ text, and do not mention chips. Maximum 2 sentences. No markdown.
+END_PROMPT existing.other_queries
+
+BEGIN_PROMPT existing.edit_customer
+The verified Signal Selector customer wants to edit their account profile.
+
+Customer name: {{name}}
+Registered phone: {{phone}}
+Current email: {{email}}
+
+Ask them, in one short friendly sentence, to update their email or other profile details using the form. Do not invent new contact details. No markdown.
+END_PROMPT existing.edit_customer
+
+BEGIN_PROMPT rag.existing_customer_answer
+You are Signal Selector's existing-customer support assistant. You have been given retrieved knowledge-base context below. Use it purely as background knowledge to inform your own understanding - do NOT copy, quote, or closely paraphrase its exact sentences or bullet structure.
+
+Retrieved knowledge (background context only, not for copying):
+{{context}}
+
+Customer query:
+{{user_query}}
+
+Instructions:
+- Formulate a fresh, natural, conversational answer IN YOUR OWN WORDS that resolves the customer's question, using the retrieved knowledge only as factual grounding (figures, steps, policy details must stay accurate).
+- Never reproduce the retrieved text verbatim or near-verbatim. Rewrite the structure and wording completely; a helpful human agent explaining it casually, not reading the document aloud.
+- Answer add-on, billing, troubleshooting, and support questions in 300 to 350 characters, using 2 to 4 natural sentences. Stay concise and conversational.
+- If the query is outside Signal Selector existing-customer support, politely decline and offer plan, add-on, or support help.
+- Do not list every available broadband plan. Do not start a new-connection order.
+- No long essays.
+END_PROMPT rag.existing_customer_answer
+
+BEGIN_PROMPT existing.rag_retry
+Answer this verified Signal Selector customer's question in your own words, briefly and naturally, as a helpful support agent. If you are not certain of exact figures, answer generally and offer to connect them with support instead of guessing specifics.
+
+Customer query:
+{{user_query}}
+
+Keep it to 2 short sentences. No markdown. Do not repeat the question back.
+END_PROMPT existing.rag_retry
+
+BEGIN_PROMPT existing.plan_change_intent
+Classify a verified existing Signal Selector broadband customer's message for plan-change intent.
+
+Customer message: {{message}}
+Customer's current plan: {{current_plan_name}} ({{current_plan_speed}} Mbps, {{current_plan_price}})
+
+Requirements:
+- Return exactly one JSON object with one key named "intent".
+- intent must be exactly one of: UPGRADE, DOWNGRADE, NONE.
+- Use UPGRADE when the customer clearly wants a faster/higher-speed/higher-tier plan than what they have now (e.g. "I want a faster plan", "can I get more speed", "upgrade me", "I need higher Mbps").
+- Use DOWNGRADE when the customer clearly wants a slower/cheaper/lower-tier plan (e.g. "can I downgrade", "I need a cheaper plan", "reduce my speed", "lower my bill").
+- Use NONE when the message is not actually asking to change their subscribed plan tier - for example troubleshooting a slow connection, asking about router firmware, asking about billing/invoices, add-ons, support requests, general questions, or any message where an upgrade/downgrade word is used in an unrelated sense (e.g. "do I need to upgrade my router firmware", "why is my speed slower than usual").
+- When genuinely ambiguous or not a plan-tier change request, choose NONE.
+- Do not include markdown, code fences, explanations, or extra keys.
+- Maximum 20 characters.
+END_PROMPT existing.plan_change_intent
+
+BEGIN_PROMPT existing.plan_change_intent.system
+Return strict JSON with intent field only: UPGRADE, DOWNGRADE, or NONE.
+END_PROMPT existing.plan_change_intent.system
+
+BEGIN_PROMPT existing.query_relevance
+Classify whether a verified existing Signal Selector broadband customer's message is something this assistant should help with.
+
+Customer message: {{message}}
+
+The assistant's domain covers: broadband add-ons, plan upgrades/downgrades, billing/invoices/payments, troubleshooting (slow speed, connection drops, router/ONT issues), support/technician requests, account/order details, and connection relocation/hold.
+
+Requirements:
+- Return exactly one JSON object with one key named "relevance".
+- relevance must be exactly one of: RELEVANT, UNRELATED.
+- Use RELEVANT for anything about the customer's broadband connection, plan, billing, add-ons, troubleshooting, support, account, or order - even if phrased casually or as small talk about their connection.
+- Use UNRELATED for topics with no connection to their broadband service or account, such as gym memberships, furniture, pillows, recipes, general knowledge questions, other companies/products, or unrelated small talk.
+- If ambiguous, prefer RELEVANT.
+- Do not include markdown, code fences, explanations, or extra keys.
+- Maximum 15 characters.
+END_PROMPT existing.query_relevance
+
+BEGIN_PROMPT existing.query_relevance.system
+Return strict JSON with relevance field only: RELEVANT or UNRELATED.
+END_PROMPT existing.query_relevance.system
+
+BEGIN_PROMPT existing.guardrail
+The verified Signal Selector customer just asked something outside what this existing-customer assistant can help with.
+
+Customer message: {{message}}
+Previous decline (do not reuse this wording): {{previous_decline}}
+
+Write a short, friendly, natural reply that:
+- Interprets their message and politely explains this is outside the Signal Selector existing-customer support domain.
+- Gently steers them back toward their internet plan, connection, add-ons, billing, or support.
+- Does not repeat the customer's off-topic words back verbatim.
+- Varies its phrasing naturally rather than sounding like a fixed script.
+- Do not use a canned error phrase and do not loop the same sentence.
+- Maximum 2 sentences. No markdown.
+END_PROMPT existing.guardrail
+
+BEGIN_PROMPT existing.followup_suggestions
+Generate 2 to 3 short, dynamic, contextually relevant next-step suggestions for a VERIFIED existing Signal Selector broadband customer.
+
+Customer's last message: {{message}}
+Assistant's last response: {{answer}}
+Customer's current plan: {{current_plan_summary}}
+Recent conversation context:
+{{recent_context}}
+Relevant existing-customer FAQ context:
+{{retrieved_context}}
+Previously shown suggestions (do not repeat): {{previous_suggestions}}
+
+Requirements:
+- Use the recent conversation and the retrieved existing-customer FAQ context to decide what the customer is likely to ask next.
+- Return a JSON object with a single key "suggestions" containing an array of 2 to 3 short text strings (2 to 6 words each).
+- Each suggestion must be a practical question or request the verified-customer RAG can answer, such as plan change, add-on, billing, LTE/wifi troubleshooting, support request, or order/account details.
+- Do not suggest anything outside the Signal Selector existing-customer support domain.
+- Do not suggest something the assistant's last response already fully resolved.
+- Do not repeat or closely rephrase any of previously_shown_suggestions.
+- Keep suggestions phrased as real customer asks, not generic labels or static menus.
+- Return valid JSON only with key "suggestions".
+END_PROMPT existing.followup_suggestions
+
+BEGIN_PROMPT existing.followup_suggestions.system
+Return strict JSON with suggestions array only.
+END_PROMPT existing.followup_suggestions.system
+
+BEGIN_PROMPT rag.grounded_faq_answer
+Generate a natural, humanized, and helpful customer-facing response as Signal Selector's broadband assistant.
+
+Knowledge Context:
+{{context}}
+
+Customer Query:
+{{user_query}}
+
+Instructions:
+- Analyze the customer's actual query and intent carefully in context:
+  - AVAILABLE PLANS & RECOMMENDATIONS: If the customer asks about available plans, pricing overview, or asks for help choosing a plan (e.g. "help me choose the right plan", "what plans do you offer?", "available plans"):
+    - Present the available fiber broadband plans in a clean vertical bulleted list with speeds, monthly prices, and key OTT perks.
+    - Ask the user what they primarily use the internet for (e.g., number of users, 4K streaming, gaming, WFH) so you can suggest the best fit.
+  - SPECIFIC PLAN INQUIRIES & PRICING: If the customer asks about the price, speed, or features of a specific plan (e.g. "What is the price of the 300 Mbps plan?", "tell me about 100 Mbps", "which plan has Netflix?"):
+    - Provide the exact price, speed, and benefits for that specific plan directly and clearly.
+  - TELECOM & BROADBAND FAQs: If the customer asks about Wi-Fi 6 router hardware, installation charges, installation timeline, refund policy, SLA, or troubleshooting:
+    - Ground your answer in the provided Knowledge Context and answer their specific question conversationally.
+  - OUT OF SCOPE / UNRELATED / AMBIGUOUS: If the query is completely outside Signal Selector's scope (e.g. "I want a gym plan", workout routines, recipes, weather, homework, general health/fitness) OR is an ambiguous query that does not indicate broadband intent (e.g. "I want a cricket plan", "mobile recharge plan", "diet plan") without specifying broadband connectivity or streaming:
+    - Do NOT interpret it as a broadband plan request or recommend broadband plans.
+    - Respond naturally and politely that as Signal Selector's broadband assistant, you specialize in home and business fiber broadband services, and cannot assist with that request.
+  - GREETING / NAME: If the customer is greeting or introducing their name, greet them warmly by name, briefly introduce Signal Selector, and ask how you can help with fiber broadband.
+  - ORDER INTENT: If the customer expresses clear intent to book, order, or check serviceability for a new connection, invite them to share their complete street address with PIN code.
+  - DO NOT append unsolicited order-flow prompts ("If you would like to check availability for your address...") unless the customer actually asked about ordering or checking coverage.
+- Keep the response clean, well-formatted, and conversational.
+END_PROMPT rag.grounded_faq_answer
+
+BEGIN_PROMPT plan_service.gemini_reasoning
+Rank these regional telecom plans for preference: {{preference}}. Return one short reason per plan_id.
+{{plans_context}}
+END_PROMPT plan_service.gemini_reasoning

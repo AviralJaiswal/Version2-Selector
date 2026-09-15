@@ -1,0 +1,15 @@
+.env
+venv/
+.venv/
+__pycache__/
+*.pyc
+chroma_data/
+frontend/node_modules/
+frontend/dist/
+*.db
+!qcom.db
+*.sqlite
+*.pptx
+slides_preview/
+create_presentation.py
+~$*.pptx
