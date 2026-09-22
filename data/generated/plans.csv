@@ -1,0 +1,11 @@
+plan_id,name,speed_mbps,price_inr,type,min_speed_required
+PLAN-00,Fiber Starter,50,499,fiber,25
+PLAN-01,Fiber Value,100,699,fiber,50
+PLAN-02,Fiber Pro,200,899,fiber,100
+PLAN-03,Fiber Max,500,1299,fiber,250
+PLAN-04,Fiber Ultra,1000,1799,fiber,500
+PLAN-05,Copper Basic,25,399,copper,12
+PLAN-06,Wireless Home,50,599,wireless,25
+PLAN-07,Wireless Plus,100,799,wireless,50
+PLAN-08,Work From Home,200,999,fiber,100
+PLAN-09,Family Stream,500,1399,fiber,250
