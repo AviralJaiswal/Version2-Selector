@@ -76,6 +76,14 @@ export function GeneralChatView({ onBack }) {
         rawPlans.length > 0
 
       const followups = response.recommended_followups || response.recommendedFollowups || (response.data && (response.data.recommended_followups || response.data.recommendedFollowups)) || []
+      const isRecoPrompt = Boolean(
+        response.recommendation_chips?.length ||
+        (response.data && response.data.recommendation_chips?.length) ||
+        (response.answer && (
+          response.answer.toLowerCase().includes('recommendation') ||
+          response.answer.toLowerCase().includes('suits you best')
+        ))
+      )
 
       setMessages((items) => {
         const alreadyHasPlans = items.some((m) => m.plans && m.plans.length > 0)
@@ -84,6 +92,7 @@ export function GeneralChatView({ onBack }) {
           role: 'assistant',
           content: response.answer,
           followups: followups,
+          isRecommendation: isRecoPrompt,
           viaVoice: Boolean(viaVoice),
           ...(shouldAttachPlans ? { plans: rawPlans } : {}),
           ...(response.recommended_plan ? { recommended_plan: response.recommended_plan } : {})
@@ -437,8 +446,13 @@ export function GeneralChatView({ onBack }) {
                       </div>
                     )}
                     <FormattedText content={item.content} />
-                    {item.role === 'assistant' && index === lastAssistantIndex && !isInOrderFlow && (
-                      <SuggestedResponses followups={item.followups} onSelect={send} busy={busy} />
+                    {item.role === 'assistant' && index === lastAssistantIndex && (!isInOrderFlow || item.isRecommendation || (item.followups && item.followups.length > 0 && !state.selected_plan)) && (
+                      <SuggestedResponses
+                        followups={item.followups}
+                        onSelect={send}
+                        busy={busy}
+                        isRecommendation={Boolean(item.isRecommendation || item.content?.toLowerCase().includes('recommendation'))}
+                      />
                     )}
                     <RecommendedPlanCard
                       recommendedPlan={item.recommended_plan}

@@ -162,6 +162,23 @@ Requirements:
 - No markdown.
 END_PROMPT service.plans_unlocked
 
+BEGIN_PROMPT service.recommendation_chips
+Generate exactly 1 short, natural, casual clickable button text that a customer would tap to accept a plan recommendation offer from a broadband assistant.
+
+Requirements:
+- Must be a first-person acceptance phrase (the customer is speaking).
+- Examples of the STYLE (do NOT copy these exactly, create fresh unique ones every time):
+  "Yes, suggest the best plan for me!", "Sure, recommend me a great plan!", "Yeah, help me pick the right one!", "Absolutely, find my ideal plan!", "Yes please, guide me to the best fit!", "Yes, I would like a recommendation", "Sure, recommend me a best plan"
+- Must be 4-10 words long.
+- Do NOT include emojis, markdown, quotes, or numbering.
+- Do NOT mention price, speed, address, or technical details.
+- Output valid JSON: {"chips": ["chip text"]}
+END_PROMPT service.recommendation_chips
+
+BEGIN_PROMPT service.recommendation_chips.system
+You generate a short clickable button label text. Output only valid JSON. No explanation.
+END_PROMPT service.recommendation_chips.system
+
 BEGIN_PROMPT service.pincode_only
 Generate a short customer-facing message explaining that PIN-code-only input cannot complete premise qualification.
 

@@ -183,6 +183,43 @@ def _generate_plans_unlocked_message(formatted_address: str, state_or_region: st
 
 
 @trace
+def _generate_recommendation_chips() -> list[str]:
+    """Generate 1 dynamic, LLM-varied recommendation acceptance chip text.
+
+    Appears as a suggested response below the plans-unlocked message so users
+    can easily notice and tap to get plan recommendations.
+    Each call produces a fresh, naturally-worded phrase.
+    """
+    import random
+    _FALLBACK_CHIPS = [
+        "Yes, recommend the best plan for me!",
+        "Sure, help me pick the right plan!",
+        "Yeah, suggest me a great plan!",
+        "Absolutely, find my ideal plan!",
+        "Yes please, guide me to the best fit!",
+        "Sure, which plan do you recommend?",
+        "Yes, I'd love a recommendation!",
+        "Go ahead, suggest the perfect plan!",
+        "Yeah, help me choose wisely!",
+        "Yes please, recommend one for me!",
+        "Yes, I would like a recommendation",
+        "Sure, recommend me a best plan",
+    ]
+    try:
+        prompt = get_prompt("service.recommendation_chips")
+        system = get_prompt("service.recommendation_chips.system")
+        data = generate_json(prompt, system=system, timeout=4)
+        if data and isinstance(data.get("chips"), list):
+            chips = [str(c).strip() for c in data["chips"] if c and len(str(c).strip()) > 3]
+            if len(chips) >= 1:
+                return chips[:1]
+    except Exception as exc:
+        logger.warning("LLM recommendation chips generation error: %s", exc)
+    # Fallback: pick 1 random chip
+    return [random.choice(_FALLBACK_CHIPS)]
+
+
+@trace
 def _generate_pincode_only_prompt(pincode: str, city: str | None = None, state: str | None = None) -> str:
     """Generate a dynamic LLM message when customer provides only a pincode, explaining complete address is required."""
     location_info = f"in {city}, {state}" if city and state else (f"in {city}" if city else "")
@@ -698,7 +735,9 @@ def handle_message(
             updated_shown = list(shown) + [f for f in followups if f not in shown]
             session["shown_suggestions"] = updated_shown[-30:]
         else:
-            followups = []
+            # Even in order flow, pass through recommendation chips so users
+            # see a highlighted suggestion to accept the recommendation offer.
+            followups = res.get("recommendation_chips") or []
 
     res["recommended_followups"] = followups
     res["recommendedFollowups"] = followups
@@ -1520,6 +1559,7 @@ def _handle_message_internal(
             state_or_region = qual.get("state") or qual.get("region") or qual.get("city") or "your region"
             answer = _generate_plans_unlocked_message(formatted_addr, state_or_region, len(plans))
             updated_state = state_for_response(state_from_session(session_id, session))
+            reco_chips = _generate_recommendation_chips()
             return {
                 "sessionId": session_id,
                 "conversationId": conversation_id,
@@ -1530,6 +1570,7 @@ def _handle_message_internal(
                 "sources": plans,
                 "canStartNewConnection": True,
                 "updatedState": updated_state,
+                "recommendation_chips": reco_chips,
             }
 
     # Sub-step 2: Address Verification & Geocoding via Mapbox with Nominatim fallback
@@ -1635,6 +1676,7 @@ def _handle_message_internal(
                 plan_count = len(plans)
                 answer = f"Your address at {qualification_result.get('formatted_address', pincode)} has been verified! Here are the {plan_count} active high-speed regional fiber plans available for {state_or_region}:"
                 updated_state = state_for_response(state_from_session(session_id, session))
+                reco_chips = _generate_recommendation_chips()
                 return {
                     "sessionId": session_id,
                     "conversationId": conversation_id,
@@ -1645,6 +1687,7 @@ def _handle_message_internal(
                     "sources": plans,
                     "canStartNewConnection": True,
                     "updatedState": updated_state,
+                    "recommendation_chips": reco_chips,
                 }
 
     # Prompt for complete address if not provided yet in Order Flow
