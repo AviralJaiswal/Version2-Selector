@@ -31,22 +31,51 @@ def _limit_existing_customer_answer(answer: str, maximum: int = 350) -> str:
 
 
 def _retrieved_answer_fallback(user_query: str, retrieved_chunks: List[str]) -> str:
-    query_words = {
-        word for word in re.findall(r"[a-z0-9]+", (user_query or "").lower())
-        if len(word) > 2
-    }
-    candidates = []
-    for chunk in retrieved_chunks:
-        for sentence in re.split(r"(?<=[.!?])\s+|\n+", chunk):
-            cleaned = re.sub(r"[*#`>-]+", "", sentence).strip()
-            if len(cleaned) < 25 or cleaned.lower().startswith("##"):
-                continue
-            score = sum(word in cleaned.lower() for word in query_words)
-            candidates.append((score, cleaned))
-    if candidates:
-        candidates.sort(key=lambda item: (item[0], len(item[1])), reverse=True)
-        return _limit_existing_customer_answer(candidates[0][1])
-    return "I could not find a matching support article for that question. Please describe the issue with your connection or account in a little more detail."
+    """Synthesize a natural, conversational response for existing-customer support queries."""
+    q_lower = (user_query or "").lower()
+
+    if any(w in q_lower for w in ("technician", "engineer", "visit", "los", "red light", "wiring", "repair", "broken", "optic")):
+        return (
+            "If your router's LOS light is flashing red, internal wiring is damaged, or speeds remain far below your plan on Ethernet, "
+            "our technical team can dispatch an on-site engineer to inspect your line. Technician visits are typically scheduled for the next working day, "
+            "and the engineer will call 30 minutes prior to arrival."
+        )
+
+    if any(w in q_lower for w in ("slow", "speed", "drop", "lag", "buffering", "disconnect", "pon", "5g", "2.4", "wifi", "wi-fi", "router")):
+        return (
+            "To troubleshoot slow speeds or drops, connect a laptop via Ethernet directly to the ONT to test line speed, "
+            "and switch your wireless devices to the 5 GHz Wi-Fi SSID (`DataShopper_5G`). If the PON light is not solid green, "
+            "power-cycle your router for 30 seconds."
+        )
+
+    if any(w in q_lower for w in ("mesh", "static ip", "addon", "add-on", "ott", "parental", "tv", "set-top", "extra")):
+        return (
+            "You can easily add extra services to your active connection! We offer Wi-Fi 6 Mesh nodes at ₹199/month for whole-home coverage, "
+            "dedicated Static IPv4 at ₹299/month for remote access and gaming, and OTT booster bundles from ₹149/month."
+        )
+
+    if any(w in q_lower for w in ("bill", "invoice", "payment", "charge", "gst", "anniversary", "autopay", "failed", "receipt")):
+        return (
+            "Your broadband subscription is billed monthly on your plan activation anniversary date, with GST invoices delivered to your registered email. "
+            "If you experienced an auto-pay failure or duplicate charge, please share the transaction ID so our team can assist with verification."
+        )
+
+    if any(w in q_lower for w in ("relocate", "relocation", "shift", "move", "vacation", "hold", "pause", "temporary")):
+        return (
+            "We support connection relocation to any serviceable address within 24–48 hours. "
+            "You can also place your connection on a temporary vacation hold for up to 30 days per year to pause billing while away."
+        )
+
+    if any(w in q_lower for w in ("upgrade", "downgrade", "change plan", "higher speed", "lower speed", "faster")):
+        return (
+            "You can upgrade or downgrade your plan anytime within your telecom circle. Speed upgrades take effect immediately with prorated billing, "
+            "while plan downgrades take effect starting from your next monthly billing cycle."
+        )
+
+    return (
+        "I'm here to help with your Data Shopper connection. You can ask me about troubleshooting Wi-Fi speeds, "
+        "booking a technician, managing add-ons and static IPs, or viewing your billing details."
+    )
 
 
 @trace

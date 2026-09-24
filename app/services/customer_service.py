@@ -18,6 +18,10 @@ def find_or_validate(db: Session, customer_id: str | None = None, name: str | No
     if not name or not phone or not email:
         raise ValueError("name, phone, and email are required")
     norm_phone = normalize_phone(phone)
+    if db and norm_phone:
+        existing_phone = db.scalar(select(Customer).where(Customer.phone == norm_phone))
+        if existing_phone and (not customer_id or existing_phone.customer_id != customer_id):
+            raise ValueError(f"This phone number ({norm_phone}) is already registered. Please try a different new number.")
     return {"customer_id": None, "name": name, "phone": norm_phone, "email": email,
             "existing_pincode": existing_pincode}
 
@@ -73,8 +77,8 @@ def find_customer_by_phone(db: Session, phone: str) -> dict | None:
     if len(normalized) != 10:
         return None
     customer = db.execute(
-        select(Customer).where(Customer.phone == normalized)
-    ).scalar_one_or_none()
+        select(Customer).where(Customer.phone == normalized).order_by(Customer.joined_on.desc())
+    ).scalars().first()
     return _customer_to_dict(customer, db=db) if customer else None
 
 

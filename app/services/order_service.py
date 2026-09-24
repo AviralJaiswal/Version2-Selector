@@ -59,6 +59,14 @@ def _upsert_customer_record(db: Session, customer: dict, address: dict, plan_id:
         )
 
     if existing_c:
+        incoming_cid = customer.get("customer_id")
+        if incoming_cid and incoming_cid != existing_c.customer_id:
+            raise ValueError(f"This phone number ({norm_phone}) is already registered. Please try a different new number.")
+        existing_name = (existing_c.name or "").strip().lower()
+        incoming_name = (customer.get("name") or "").strip().lower()
+        if existing_name and incoming_name and existing_name != incoming_name and not incoming_cid:
+            raise ValueError(f"This phone number ({norm_phone}) is already registered to an existing account. Please try a different new number.")
+
         if customer.get("name"):
             existing_c.name = customer.get("name")
         if raw_email:

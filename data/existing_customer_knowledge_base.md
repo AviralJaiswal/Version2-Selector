@@ -1,7 +1,5 @@
 # Existing Customer Support Knowledge Base
 
-Use this collection only after the customer's registered mobile number has been verified.
-
 ## Add-on Services
 Existing customers can add optional services to an active connection without taking a new order.
 - **Wi-Fi 6 Mesh Add-on (ADD-MESH)**: ₹199/month. Extra mesh nodes for whole-home coverage and dead-zone removal in large or multi-floor homes.

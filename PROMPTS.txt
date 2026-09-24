@@ -404,15 +404,40 @@ The verified customer tapped "Something else". Ask in one short, friendly senten
 END_PROMPT existing.something_else
 
 BEGIN_PROMPT existing.other_queries
-The verified Data Shopper customer just chose "Other Queries" after phone verification.
+The verified Data Shopper customer just selected "Other Queries" in existing customer support.
 
 Customer name: {{name}}
 Current plan: {{current_plan_summary}}
-Relevant support knowledge for this customer:
+
+Write a warm, empathetic, and professional message (1-2 sentences) asking what specific problem or question they are facing with their connection, router, speed, billing, or add-ons. Invite them to describe the issue or select one of the suggested topics below. No markdown.
+END_PROMPT existing.other_queries
+
+BEGIN_PROMPT existing.followup_suggestions
+You are Data Shopper's telecom AI assistant. Generate 2 to 3 dynamic, natural suggested question chips that a verified broadband customer might ask next based on the support knowledge base and recent conversation.
+
+Customer Message: {{message}}
+Assistant Answer: {{answer}}
+Customer Plan: {{current_plan_summary}}
+Recent Conversation:
+{{recent_context}}
+
+Retrieved Support Knowledge:
 {{retrieved_context}}
 
-Write a short, natural, conversational prompt asking what problem they are facing with their connection or account. Use the support knowledge only to make the invitation specific and useful. Invite them to describe the issue in their own words. Do not list menu options, do not dump FAQ text, and do not mention chips. Maximum 2 sentences. No markdown.
-END_PROMPT existing.other_queries
+Previously shown suggestions (DO NOT REPEAT):
+{{previous_suggestions}}
+
+Requirements:
+- Return a JSON object with one key: "suggestions", which is an array of 2 to 3 short query strings (e.g. ["Troubleshoot slow Wi-Fi speed", "How do I get a static IP?", "Billing & invoice inquiry"]).
+- The suggestions MUST be relevant to telecom broadband problems/topics (e.g., slow speed, Wi-Fi drops, red LOS light on router, mesh Wi-Fi add-on, static IP, billing cycle, technician visit, connection relocation).
+- Each suggestion should be concise (under 40 characters) and sound like a natural question from the customer.
+- Do NOT repeat previously shown suggestions.
+- Return valid JSON only, no markdown.
+END_PROMPT existing.followup_suggestions
+
+BEGIN_PROMPT existing.followup_suggestions.system
+Return strict JSON with a "suggestions" array of 2 to 3 natural telecom query strings.
+END_PROMPT existing.followup_suggestions.system
 
 BEGIN_PROMPT existing.edit_customer
 The verified Data Shopper customer wants to edit their account profile.

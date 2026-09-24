@@ -878,16 +878,12 @@ def _generate_existing_followups(session: dict, message: str, answer: str) -> li
             raw = [str(s).strip() for s in data["suggestions"] if s and len(str(s).strip()) > 1]
             normalized: list[str] = []
             for s in raw:
-                if s.lower() in {p.lower() for p in shown}:
+                cleaned_s = s.strip('"\' ')
+                if cleaned_s.lower() in {p.lower() for p in shown}:
                     continue
-                if len(s) < 6:
+                if len(cleaned_s) < 4:
                     continue
-                if not re.search(
-                    r"\b(can|could|what|when|where|why|how|show|check|help|tell|need|want|is|do|does|upgrade|downgrade|add|bill|invoice|troubleshoot|support|wifi|slow|mesh|addon|add-on|problem|issue)\b",
-                    s.lower(),
-                ):
-                    continue
-                normalized.append(s)
+                normalized.append(cleaned_s)
             picked = normalized[:3]
             if picked:
                 session["shown_existing_suggestions"] = (shown + [s for s in picked if s not in shown])[-30:]
@@ -895,21 +891,24 @@ def _generate_existing_followups(session: dict, message: str, answer: str) -> li
     except Exception as exc:
         logger.warning("Existing-customer follow-up suggestion generation error: %s", exc)
 
-    # Keep suggestions useful during a temporary model outage by deriving them
-    # from retrieved knowledge-base sections rather than a static menu.
+    # Derive suggestions from retrieved knowledge-base sections if LLM JSON is unavailable
     fallback_questions = []
     shown_lower = {item.lower() for item in shown}
     for chunk in relevant_chunks:
-        heading = re.search(r"^##\s+(.+)$", chunk, flags=re.MULTILINE)
-        if not heading:
+        lines = [ln.strip() for ln in chunk.splitlines() if ln.strip()]
+        if not lines:
             continue
-        topic = heading.group(1).splitlines()[0].strip().rstrip(".")
-        topic_words = re.findall(r"[A-Za-z]+", topic.lower())
-        topic_words = [word for word in topic_words if word not in {"and", "the", "for"}]
-        topic_words = topic_words[:3]
-        if not topic_words:
+        first_line = lines[0].lstrip("#").strip().rstrip(":")
+        if not first_line or len(first_line) > 50:
             continue
-        question = f"Help with {' '.join(topic_words)}?"
+        if first_line.lower().startswith(("how ", "what ", "why ", "when ")):
+            question = first_line if first_line.endswith("?") else f"{first_line}?"
+        elif "troubleshoot" in first_line.lower() or "speed" in first_line.lower():
+            question = f"Troubleshoot {first_line.lower()}"
+        elif "add-on" in first_line.lower() or "addon" in first_line.lower():
+            question = f"Explore {first_line}"
+        else:
+            question = f"{first_line} details"
         if question.lower() not in shown_lower:
             fallback_questions.append(question)
     picked = fallback_questions[:3]
@@ -1239,19 +1238,14 @@ def _handle_existing_customer_message(
             "add-on billing invoice troubleshooting technician support relocation mesh wifi slow speed",
             top_k=3,
         )
-        rag_context = "\n---\n".join(relevant_chunks) if relevant_chunks else "No matching support passage was retrieved."
+        cust_name = customer.get("name") or "there"
+        plan_name = current_plan.get("name") if current_plan else "Data Shopper broadband"
         answer = _existing_llm_reply(
             "existing.other_queries",
-            "",
-            name=customer.get("name") or "there",
+            f"Hello {cust_name}! How can I help you with your {plan_name} connection today? Feel free to ask any question regarding speeds, router issues, billing, add-ons, or technician visits.",
+            name=cust_name,
             current_plan_summary=plan_summary,
-            retrieved_context=rag_context,
         )
-        if not answer:
-            answer = _verified_existing_rag_answer(
-                "Invite the verified customer to describe their broadband connection or account issue.",
-                session,
-            )
         return _respond(answer, "OTHER_QUERIES")
 
     # Check if user asks for order or appointment details
@@ -1888,6 +1882,13 @@ def _handle_message_internal(
 
     # Sub-step 4: Customer Details Capture
     customer = session.get("customer") or {}
+    if structured_fields and structured_fields.get("customer") and isinstance(structured_fields["customer"], dict):
+        cust_payload = structured_fields["customer"]
+        for ck, cv in cust_payload.items():
+            if cv:
+                customer[ck] = cv
+        session["customer"] = customer
+
     if session.get("customer_name") and not customer.get("name"):
         customer["name"] = session["customer_name"]
     extracted = _extract_customer_info(message)
@@ -1915,10 +1916,28 @@ def _handle_message_internal(
             "updatedState": updated_state,
         }
 
-    # Save validated customer profile
+    # Save validated customer profile with duplicate phone check
     try:
         validated_customer = find_or_validate(db, **customer)
         session["customer"] = validated_customer
+    except ValueError as exc:
+        logger.warning("Customer validation error: %s", exc)
+        if "phone" in customer:
+            del customer["phone"]
+        session["customer"] = customer
+        answer = f"⚠️ {str(exc)}"
+        updated_state = state_for_response(state_from_session(session_id, session))
+        return {
+            "sessionId": session_id,
+            "conversationId": conversation_id,
+            "mode": "ORDER_FLOW",
+            "intent": "CAPTURE_CUSTOMER_DETAILS",
+            "workflowState": "CUSTOMER_DETAILS",
+            "response": answer,
+            "sources": [],
+            "canStartNewConnection": True,
+            "updatedState": updated_state,
+        }
     except Exception as exc:
         logger.warning("Customer validation warning: %s", exc)
 

@@ -285,7 +285,7 @@ def chat(
                     if raise_on_error and candidate_model == configured_model:
                         _raise_for_http_error(response, model=candidate_model, endpoint=url)
                     if "free-models-per-day" in response.text:
-                        continue
+                        break
                     continue
 
                 if response.status_code >= 400:
