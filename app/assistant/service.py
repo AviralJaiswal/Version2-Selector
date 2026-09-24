@@ -32,6 +32,7 @@ from app.services.customer_service import (
     find_customer_by_phone,
     get_upgrade_downgrade_options,
     get_customer_region,
+    get_customer_service_info,
     apply_plan_change,
     normalize_phone,
     update_customer_details,
@@ -1089,12 +1090,14 @@ def _handle_existing_customer_message(
 
         session["existing_customer_verified"] = True
         session["customer"] = customer
-        session["customer_region"] = get_customer_region(customer)
+        region, max_speed = get_customer_service_info(db, customer)
+        session["customer_region"] = region
+        session["customer_max_speed"] = max_speed
         session["catalog_plans"] = []
         session["plans_shown"] = False
 
         options = get_upgrade_downgrade_options(
-            db, customer.get("current_plan_id"), region=session["customer_region"]
+            db, customer.get("current_plan_id"), region=session["customer_region"], max_speed=session.get("customer_max_speed")
         )
         current_plan = options["current"]
         session["current_plan"] = current_plan
@@ -1303,6 +1306,7 @@ def _handle_existing_customer_message(
             db,
             current_plan.get("plan_id") if current_plan else None,
             region=session.get("customer_region"),
+            max_speed=session.get("customer_max_speed"),
         )
         current = options.get("current") or current_plan
         candidates = options["upgrades"] if intent == "UPGRADE" else options["downgrades"]

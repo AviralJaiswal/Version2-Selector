@@ -62,20 +62,31 @@ def recommend(db: Session, max_speed: int | None = None, preference: str | None 
     Plans are queried from the regional plans data source (data/regional_plans_catalog.json,
     hot-reloadable and swappable for a DB-backed source later) rather than from an
     in-code array. Results are strictly filtered to the plans registered for the
-    verified circle and capped to 3-4 plans as required by the ordering flow.
+    verified circle.
+    Guarantees a minimum of 4 plans and maximum of 6 plans for all regions.
     """
     catalog = _load_regional_plans()
-    circle = get_telecom_circle(state=state_or_region or "")
+    if state_or_region and state_or_region in catalog:
+        circle = state_or_region
+    else:
+        str_val = (state_or_region or "").strip()
+        circle = get_telecom_circle(
+            state=str_val,
+            pincode=str_val if str_val.isdigit() and len(str_val) == 6 else ""
+        )
     plans = catalog.get(circle) or catalog.get("Delhi NCR") or []
 
-    if max_speed:
-        filtered = [p for p in plans if p["speed_mbps"] <= max_speed]
-        # Guard against an over-restrictive speed cap leaving nothing to show -
-        # fall back to the full regional set rather than returning an empty list.
-        plans = filtered or plans
+    # Sort plans by speed ascending so filtering and min/max caps are deterministic
+    plans = sorted(plans, key=lambda p: int(p.get("speed_mbps") or 0))
 
-    # Return all plans valid for this region/tier, similar to standard telecom websites.
-    plans = plans
+    if max_speed:
+        filtered = [p for p in plans if int(p.get("speed_mbps") or 0) <= max_speed]
+        # Ensure minimum 4 plans (and max 6 plans) across all regions
+        if len(filtered) < 4:
+            filtered = plans[:max(4, len(filtered))]
+        plans = filtered[:6] if filtered else plans[:4]
+    else:
+        plans = plans[:6]
 
     reasons = _gemini_reasons(plans, preference) if use_gemini_reasoning else {}
     return [

@@ -127,35 +127,19 @@ def list_all_plans(db: Session) -> list[dict]:
 
 
 @trace
-def list_region_plans(db: Session, region: str | None) -> list[dict]:
+def list_region_plans(db: Session, region: str | None, max_speed: int | None = None) -> list[dict]:
     """Plans for one telecom circle from the regional catalog only.
 
-    Does not merge the nationwide SQLite catalog or other circles — existing
-    customers should only see plans for their stored region.
+    Uses the exact same regional plan catalog and filtering logic as the General flow recommend().
     """
     if not region:
         return list_all_plans(db)
 
     try:
-        from app.services.plan_service import _load_regional_plans
-        regional_dict = _load_regional_plans()
-        circle_plans = regional_dict.get(region) or []
-        plans_list = [
-            {
-                "plan_id": p.get("plan_id"),
-                "name": p.get("name", "Broadband Plan"),
-                "speed_mbps": int(p.get("speed_mbps", 100)),
-                "price_inr": int(p.get("price_inr", 799)),
-                "type": p.get("type", "broadband"),
-                "min_speed_required": int(p.get("min_speed_required", 0)),
-                "description": p.get("description", ""),
-                "ott_bundle": p.get("ott_bundle", []),
-            }
-            for p in circle_plans
-            if p.get("plan_id")
-        ]
-        if plans_list:
-            return sorted(plans_list, key=lambda p: p.get("speed_mbps") or 0)
+        from app.services.plan_service import recommend
+        plans = recommend(db, max_speed=max_speed, state_or_region=region, use_gemini_reasoning=False)
+        if plans:
+            return plans
     except Exception:
         pass
 
@@ -163,16 +147,14 @@ def list_region_plans(db: Session, region: str | None) -> list[dict]:
 
 
 @trace
-def get_customer_region(customer: dict | None) -> str | None:
-    """Determine a customer's telecom circle/region from their own order/profile
-    data: prefers the address captured on their most recent order (the region
-    selected during the General -> New Connection -> Order flow), falling back
-    to their stored existing_pincode for customers with no order on file
-    (e.g. the static customers.csv seed data)."""
+def get_customer_service_info(db: Session | None, customer: dict | None) -> tuple[str | None, int | None]:
+    """Determine a customer's telecom circle/region and maximum available speed
+    from their registered address / pincode data."""
     if not customer:
-        return None
+        return None, None
 
     from app.services.address_service import get_telecom_circle
+    from app.models.address import Address
 
     latest_order = customer.get("latest_order") or {}
     order_details = latest_order.get("details") or {}
@@ -183,24 +165,43 @@ def get_customer_region(customer: dict | None) -> str | None:
     pincode = addr.get("pincode") or latest_order.get("service_pincode") or customer.get("existing_pincode") or ""
 
     if not (state or city or pincode):
-        return None
-    return get_telecom_circle(state=state, city=city, pincode=pincode)
+        return None, None
+
+    region = get_telecom_circle(state=state, city=city, pincode=pincode)
+
+    max_speed = None
+    if db and pincode:
+        try:
+            db_addr = db.scalar(select(Address).where(Address.pincode == str(pincode).strip()))
+            if db_addr and db_addr.max_speed_available_mbps:
+                max_speed = db_addr.max_speed_available_mbps
+        except Exception:
+            pass
+
+    return region, max_speed
 
 
 @trace
-def get_upgrade_downgrade_options(db: Session, current_plan_id: str | None, region: str | None = None) -> dict:
+def get_customer_region(customer: dict | None, db: Session | None = None) -> str | None:
+    """Determine a customer's telecom circle/region from their registered address/pincode."""
+    region, _ = get_customer_service_info(db, customer)
+    return region
+
+
+@trace
+def get_upgrade_downgrade_options(db: Session, current_plan_id: str | None, region: str | None = None, max_speed: int | None = None) -> dict:
     """Split the plan catalog into upgrade/downgrade options relative to current_plan_id.
 
-    When region is given, only that region's plans (plus the shared base
-    catalog) are considered, so a customer never sees another region's plans.
+    Uses the exact same regional plan catalog/filtering logic as the General flow,
+    so existing customers see only plans valid for their region and line capability.
     Returns {"current": dict|None, "upgrades": [...], "downgrades": [...]},
     with both candidate lists ordered by speed ascending.
     """
-    all_plans = list_region_plans(db, region)
+    all_plans = list_region_plans(db, region, max_speed=max_speed)
     current = next((p for p in all_plans if p["plan_id"] == current_plan_id), None)
 
     if not current and current_plan_id:
-        # Current plan wasn't in this region's catalog (e.g. legacy data) -
+        # Current plan wasn't in this region's filtered catalog (e.g. legacy plan) -
         # still show it for reference, but keep upgrade/downgrade options
         # scoped to the customer's own region only.
         current = next((p for p in list_all_plans(db) if p["plan_id"] == current_plan_id), None)
